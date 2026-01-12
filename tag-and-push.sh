@@ -26,7 +26,7 @@ jq ".version = \"${VERSION}\"" package.json | tee package.json.new
 
 mv package.json.new package.json
 
-npm install --include=dev
+npm install --include=dev --legacy-peer-deps
 
 git add package.json package-lock.json
 
