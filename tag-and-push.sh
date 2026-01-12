@@ -30,7 +30,7 @@ npm install --include=dev
 
 git add package.json package-lock.json
 
-git commit -m "Version ${VERSION}"
+git commit -m "Version ${VERSION} $*"
 
 git tag "${VERSION}-build"
 
