@@ -18,8 +18,6 @@ export default class GameserverBase implements GameserverBaseSpec {
   public Status: GameserverBaseStatus;
 
   public constructor(GameserverBaseSpec: GameserverBaseSpec) {
-    const now = new Date();
-
     this.Game = GameserverBaseSpec.Game;
     this.StorageClassName = GameserverBaseSpec.StorageClassName;
     this.StorageStrategy = GameserverBaseSpec.StorageStrategy;
