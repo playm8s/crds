@@ -1,15 +1,26 @@
 'use strict';
-export class GameserverOverlay {
+export default class GameserverOverlay {
     Game;
     StorageClassName;
-    UpdateMechanism;
+    StorageStrategy;
+    Status;
     constructor(GameserverOverlaySpec) {
         this.Game = GameserverOverlaySpec.Game;
         this.StorageClassName = GameserverOverlaySpec.StorageClassName;
-        this.UpdateMechanism = GameserverOverlaySpec.UpdateMechanism;
+        this.StorageStrategy = GameserverOverlaySpec.StorageStrategy;
+        this.Status = GameserverOverlaySpec.Status;
         return this;
     }
     ;
+    SetStatus(message, reason) {
+        const now = new Date();
+        const GameserverOverlayStatus = {
+            lastTransitionTime: now,
+            message: message,
+            reason: reason,
+        };
+        this.Status = GameserverOverlayStatus;
+    }
 }
 export const details = {
     plural: 'GameserverOverlays',

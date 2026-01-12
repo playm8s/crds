@@ -1,2 +1,2 @@
-import * as api from "./api/index.mjs";
-export { api };
+'use strict';
+export { api as pm8s } from "./api/index.mjs";

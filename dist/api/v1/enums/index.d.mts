@@ -1,13 +1,14 @@
-export declare enum GameEnum {
-    "csgo" = 0,
-    "cs2" = 1
+export declare enum Games {
+    csgo = "csgo",
+    cs2 = "cs2"
 }
-export declare enum UpdateMechanismEnum {
-    "raw" = 0,
-    "overlayfs" = 1
+export declare enum StorageStrategies {
+    raw = "raw",
+    overlayfs = "overlayfs"
 }
-export declare enum ExtendedStatusEnum {
-    "ok" = 0,
-    "updating" = 1,
-    "error" = 2
+export declare enum StatusReasons {
+    created = "created",
+    updated = "updated",
+    deleted = "deleted",
+    modified = "modified"
 }
