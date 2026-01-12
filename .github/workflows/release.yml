@@ -42,7 +42,6 @@ jobs:
         shell: bash
         run: |
           npm install --include=dev --legacy-peer-deps
-          npm ci
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
