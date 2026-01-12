@@ -11,6 +11,18 @@ import {
   ExtendedStatusEnum,
 } from './enums/index.mjs';
 
+export class GameserverOverlay implements GameserverOverlaySpec {
+  public Game: GameEnum;
+  public StorageClassName: string;
+  public UpdateMechanism: UpdateMechanismEnum;
+
+  public constructor(spec: GameserverOverlaySpec) {
+    this.Game = spec.Game;
+    this.StorageClassName = spec.StorageClassName;
+    this.UpdateMechanism = spec.UpdateMechanism;
+  };
+}
+
 export interface GameserverOverlaySpec {
   /**
    * Game defines the game for this GameserverOverlay instance
