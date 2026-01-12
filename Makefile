@@ -1,7 +1,8 @@
 SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
-all: build
+lint:
+	npm run test
 
 build:
 	npx tsc

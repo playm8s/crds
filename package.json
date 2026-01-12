@@ -1,6 +1,6 @@
 {
   "name": "@playm8s/crds",
-  "version": "0.4.38",
+  "version": "0.4.39",
   "description": "crds for playm8s",
   "keywords": [],
   "homepage": "https://github.com/playm8s/crds#readme",
@@ -20,13 +20,24 @@
   "main": "dist/index.mjs",
   "typings": "dist/index.d.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx eslint src/"
   },
   "publishConfig": {
     "@playm8s:registry": "https://npm.pkg.github.com/"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-typescript": "^0.14.0",
+    "node-forge": "^1.3.3",
     "pepr": "^1.0.4",
-    "typescript": "^5.8.3"
+    "prettier": "^3.7.4",
+    "prompts": "^2.4.2",
+    "typescript": "^5.8.3",
+    "uuid": "^13.0.0"
   }
 }

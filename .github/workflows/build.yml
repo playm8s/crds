@@ -45,11 +45,12 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Generate crds, Compile Typescript, Git push
+      - name: Lint, Generate crds, Compile Typescript, Git push
         shell: bash
         run: |
-          npm install --include=dev
-          make
+          npm install --include=dev --legacy-peer-deps
+          make lint
+          make build
           git add -f crds/**
           git add -f dist/**
           git commit --allow-empty -m "${GITHUB_REF_NAME%-*} - Build for ${{ github.sha }}"
