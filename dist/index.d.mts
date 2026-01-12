@@ -1,2 +1,5 @@
 import * as api from "./api/index.mjs";
-export { api, };
+declare const _default: {
+    api: typeof api;
+};
+export default _default;
