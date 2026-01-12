@@ -3,7 +3,6 @@ export declare class GameserverOverlay implements GameserverOverlaySpec {
     Game: GameEnum;
     StorageClassName: string;
     UpdateMechanism: UpdateMechanismEnum;
-    ['constructor']: typeof GameserverOverlay;
     constructor(GameserverOverlaySpec: GameserverOverlaySpec);
 }
 export interface GameserverOverlaySpec {
