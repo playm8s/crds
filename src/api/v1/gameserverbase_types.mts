@@ -16,10 +16,12 @@ export class GameserverBase implements GameserverBaseSpec {
   public StorageClassName: string;
   public UpdateMechanism: UpdateMechanismEnum;
 
-  public constructor(spec: GameserverBaseSpec) {
-    this.Game = spec.Game;
-    this.StorageClassName = spec.StorageClassName;
-    this.UpdateMechanism = spec.UpdateMechanism;
+  ['constructor']: typeof GameserverBase;
+
+  public constructor(GameserverBaseSpec: GameserverBaseSpec) {
+    this.Game = GameserverBaseSpec.Game;
+    this.StorageClassName = GameserverBaseSpec.StorageClassName;
+    this.UpdateMechanism = GameserverBaseSpec.UpdateMechanism;
   };
 }
 

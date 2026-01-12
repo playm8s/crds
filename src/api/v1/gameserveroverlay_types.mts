@@ -16,10 +16,12 @@ export class GameserverOverlay implements GameserverOverlaySpec {
   public StorageClassName: string;
   public UpdateMechanism: UpdateMechanismEnum;
 
-  public constructor(spec: GameserverOverlaySpec) {
-    this.Game = spec.Game;
-    this.StorageClassName = spec.StorageClassName;
-    this.UpdateMechanism = spec.UpdateMechanism;
+  ['constructor']: typeof GameserverOverlay;
+
+  public constructor(GameserverOverlaySpec: GameserverOverlaySpec) {
+    this.Game = GameserverOverlaySpec.Game;
+    this.StorageClassName = GameserverOverlaySpec.StorageClassName;
+    this.UpdateMechanism = GameserverOverlaySpec.UpdateMechanism;
   };
 }
 
