@@ -1,6 +1,6 @@
 {
   "name": "@playm8s/crds",
-  "version": "0.4.50",
+  "version": "0.4.51",
   "description": "crds for playm8s",
   "keywords": [],
   "homepage": "https://github.com/playm8s/crds#readme",
@@ -20,11 +20,7 @@
   "main": "dist/cjs/index.js",
   "typings": "dist/esm/index.d.mjs",
   "module": "dist/esm/index.mjs",
-  "scripts": {
-    "test": "npx eslint src/",
-    "tsc": "npx tsc -p tsconfig.json && npx tsc -p tsconfig-cjs.json",
-    "prepublishOnly": "npm run tsc"
-  },
+  "scripts": {},
   "publishConfig": {
     "@playm8s:registry": "https://npm.pkg.github.com/"
   },
