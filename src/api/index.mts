@@ -1,5 +1,5 @@
 import * as v1 from "./v1/index.mjs";
 
-export {
+export default {
   v1,
 };
