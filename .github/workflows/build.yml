@@ -1,0 +1,57 @@
+name: Build CRDs, Publish NPM Package
+
+on:
+  push:
+    tags:
+      - '*-build'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: playm8s-crds
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: "${{ secrets.GH_PAT }}"
+          ref: main
+          clean: true
+          fetch-depth: 1
+          fetch-tags: true
+          set-safe-directory: true
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Generate crds, npm publish
+        shell: bash
+        run: |
+          npm install --include=dev
+          make
+          git add -f crds/**
+          git commit -m "Generate CRDs for commit ${{ github.sha }}"
+          git tag "${GITHUB_REF_NAME%-*}"
+          git push
+          git push --tags

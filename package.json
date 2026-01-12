@@ -1,0 +1,31 @@
+{
+  "name": "playm8s-crds",
+  "version": "0.4.20",
+  "description": "crds for playm8s",
+  "keywords": [],
+  "homepage": "https://github.com/playm8s/crds#readme",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/playm8s/crds/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/playm8s/crds.git"
+  },
+  "type": "module",
+  "license": "CC-BY-SA-4.0",
+  "author": "Edwin Pers <pers.edwin@gmail.com>",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "pepr": "^1.0.4",
+    "typescript": "^5.8.3"
+  }
+}

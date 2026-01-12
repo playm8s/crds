@@ -1,0 +1,58 @@
+name: Build CRDs, Publish NPM Package
+
+on:
+  push:
+    tags:
+      - '*'
+      - '!*-build'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: playm8s-crds
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: "${{ secrets.GH_PAT }}"
+          ref: main
+          clean: true
+          fetch-depth: 1
+          fetch-tags: true
+          set-safe-directory: true
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: NPM publish
+        shell: bash
+        run: |
+          npm ci
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          make_latest: true
+          generate_release_notes: true
+          files: |
+            crds/**
