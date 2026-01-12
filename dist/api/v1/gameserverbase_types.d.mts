@@ -3,7 +3,8 @@ export declare class GameserverBase implements GameserverBaseSpec {
     Game: GameEnum;
     StorageClassName: string;
     UpdateMechanism: UpdateMechanismEnum;
-    constructor(spec: GameserverBaseSpec);
+    ['constructor']: typeof GameserverBase;
+    constructor(GameserverBaseSpec: GameserverBaseSpec);
 }
 export interface GameserverBaseSpec {
     /**

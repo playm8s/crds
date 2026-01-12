@@ -3,10 +3,11 @@ export class GameserverOverlay {
     Game;
     StorageClassName;
     UpdateMechanism;
-    constructor(spec) {
-        this.Game = spec.Game;
-        this.StorageClassName = spec.StorageClassName;
-        this.UpdateMechanism = spec.UpdateMechanism;
+    ['constructor'];
+    constructor(GameserverOverlaySpec) {
+        this.Game = GameserverOverlaySpec.Game;
+        this.StorageClassName = GameserverOverlaySpec.StorageClassName;
+        this.UpdateMechanism = GameserverOverlaySpec.UpdateMechanism;
     }
     ;
 }
