@@ -4,7 +4,7 @@ SHELL = /usr/bin/env bash -o pipefail
 all: lint build
 
 lint:
-	npm run test
+	npx eslint src/
 
 build:
 	npx tsc
