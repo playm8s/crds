@@ -51,7 +51,7 @@ jobs:
           npm install --include=dev
           make
           git add -f crds/**
-          git commit -fm "Generate CRDs for commit ${{ github.sha }}"
+          git commit --allow-empty -m "Generate CRDs for commit ${{ github.sha }}"
           git tag "${GITHUB_REF_NAME%-*}"
           git push
           git push --tags
