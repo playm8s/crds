@@ -1,4 +1,10 @@
 import { GameEnum, UpdateMechanismEnum, ExtendedStatusEnum } from './enums/index.mjs';
+export declare class GameserverBase implements GameserverBaseSpec {
+    Game: GameEnum;
+    StorageClassName: string;
+    UpdateMechanism: UpdateMechanismEnum;
+    constructor(spec: GameserverBaseSpec);
+}
 export interface GameserverBaseSpec {
     /**
      * Game defines the game for this GameserverBase instance
