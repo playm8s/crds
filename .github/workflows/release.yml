@@ -40,6 +40,7 @@ jobs:
       - name: NPM publish
         shell: bash
         run: |
+          npm install --include=dev
           npm ci
           npm publish
         env:
