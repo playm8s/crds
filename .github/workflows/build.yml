@@ -1,4 +1,4 @@
-name: Build CRDs
+name: Build
 
 on:
   push:
