@@ -11,17 +11,16 @@ import {
   ExtendedStatusEnum,
 } from './enums/index.mjs';
 
-export class GameserverBase implements GameserverBaseSpec {
+export default class GameserverBase implements GameserverBaseSpec {
   public Game: GameEnum;
   public StorageClassName: string;
   public UpdateMechanism: UpdateMechanismEnum;
-
-  ['constructor']: typeof GameserverBase;
 
   public constructor(GameserverBaseSpec: GameserverBaseSpec) {
     this.Game = GameserverBaseSpec.Game;
     this.StorageClassName = GameserverBaseSpec.StorageClassName;
     this.UpdateMechanism = GameserverBaseSpec.UpdateMechanism;
+    return this;
   };
 }
 

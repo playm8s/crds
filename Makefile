@@ -1,6 +1,8 @@
 SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
+all: lint build
+
 lint:
 	npm run test
 
