@@ -35,4 +35,4 @@ git commit -m "${VERSION} - $*"
 git tag "${VERSION}-build"
 
 git push \
-&& git push --tags
+&& git push --tags || git tag -d "${VERSION}-build"
