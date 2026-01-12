@@ -52,7 +52,7 @@ jobs:
           make
           git add -f crds/**
           git add -f dist/**
-          git commit --allow-empty -m "Build for commit ${{ github.sha }}"
+          git commit --allow-empty -m "${GITHUB_REF_NAME%-*} - Build for ${{ github.sha }}"
           git tag "${GITHUB_REF_NAME%-*}"
           git push
           git push --tags
