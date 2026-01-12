@@ -18,9 +18,11 @@ export VERSION
 
 jq ".version = \"${VERSION}\"" package.json | tee package.json.new
 
+npm install --include=dev
+
 mv package.json.new package.json
 
-git add package.json
+git add package.json package-lock.json
 
 git commit -m "Version ${VERSION}"
 
