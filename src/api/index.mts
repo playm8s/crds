@@ -1,3 +1,7 @@
-import * as v1 from "./v1/index.mjs";
+'use strict';
 
-export { v1 };
+import { v1 } from "./v1/index.mjs";
+
+export const api = {
+  v1: v1,
+}

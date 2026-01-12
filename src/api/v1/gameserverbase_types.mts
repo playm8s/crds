@@ -6,29 +6,43 @@
 // Domain: io
 
 import {
-  GameEnum,
-  UpdateMechanismEnum,
-  ExtendedStatusEnum,
+  Games,
+  StorageStrategies,
+  StatusReasons,
 } from './enums/index.mjs';
 
 export default class GameserverBase implements GameserverBaseSpec {
-  public Game: GameEnum;
+  public Game: Games;
   public StorageClassName: string;
-  public UpdateMechanism: UpdateMechanismEnum;
+  public StorageStrategy: StorageStrategies;
+  public Status: GameserverBaseStatus;
 
   public constructor(GameserverBaseSpec: GameserverBaseSpec) {
+    const now = new Date();
+
     this.Game = GameserverBaseSpec.Game;
     this.StorageClassName = GameserverBaseSpec.StorageClassName;
-    this.UpdateMechanism = GameserverBaseSpec.UpdateMechanism;
+    this.StorageStrategy = GameserverBaseSpec.StorageStrategy;
+    this.Status = GameserverBaseSpec.Status;
     return this;
   };
+
+  public SetStatus(message: string, reason: StatusReasons) {
+    const now = new Date();
+    const GameserverBaseStatus: GameserverBaseStatus = {
+      lastTransitionTime: now,
+      message: message,
+      reason: reason,
+    }
+    this.Status = GameserverBaseStatus;
+  }
 }
 
 export interface GameserverBaseSpec {
   /**
    * Game defines the game for this GameserverBase instance
    */
-  Game: GameEnum;
+  Game: Games;
 
   /**
    * StorageClassName defines the storageclass that will be used to store the files for this GameserverBase
@@ -36,22 +50,17 @@ export interface GameserverBaseSpec {
   StorageClassName: string;
 
   /**
-   * UpdateMechanism selects which update mechanism will be used for this GSB
+   * StorageStrategy selects which storage mechanism will be used for this GSB
    */
-  UpdateMechanism: UpdateMechanismEnum;
+  StorageStrategy: StorageStrategies;
+
+  /**
+   * Status reflects the status of this GSB
+   */
+  Status: GameserverBaseStatus
 }
 
 export interface GameserverBaseStatus {
-  conditions: GameserverBaseStatusCondition[];
-}
-
-export const details = {
-  plural: 'GameserverBases',
-  scope: 'Namespaced',
-  shortName: 'gsbase',
-};
-
-type GameserverBaseStatusCondition = {
   /**
    * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
    */
@@ -63,33 +72,13 @@ type GameserverBaseStatusCondition = {
   message: string;
 
   /**
-   * observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.
+   * reason contains a programmatic identifier indicating the reason for the condition's last transition.
    */
-  observedGeneration?: number;
+  reason: StatusReasons;
+}
 
-  /**
-   * reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.
-   */
-  reason: string;
-
-  /**
-   * status of the condition, one of True, False, Unknown.
-   */
-  status: string;
-
-  /**
-   * base info
-   */
-  baseInfo: {
-    // extended status info
-    extendedStatus: ExtendedStatusEnum;
-    // unix timestamp for last time gameserver was updated
-    lastUpdated: number;
-    // Build ID for current version
-    currentBuildId: number;
-    // Build ID for target version
-    targetBuildID: number;
-    // PVC Name for current version
-    persistentVolumeClaimName: string;
-  };
+export const details = {
+  plural: 'GameserverBases',
+  scope: 'Namespaced',
+  shortName: 'gsbase',
 };

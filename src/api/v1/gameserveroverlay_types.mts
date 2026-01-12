@@ -6,29 +6,41 @@
 // Domain: io
 
 import {
-  GameEnum,
-  UpdateMechanismEnum,
-  ExtendedStatusEnum,
+  Games,
+  StorageStrategies,
+  StatusReasons,
 } from './enums/index.mjs';
 
-export class GameserverOverlay implements GameserverOverlaySpec {
-  public Game: GameEnum;
+export default class GameserverOverlay implements GameserverOverlaySpec {
+  public Game: Games;
   public StorageClassName: string;
-  public UpdateMechanism: UpdateMechanismEnum;
+  public StorageStrategy: StorageStrategies;
+  public Status: GameserverOverlayStatus;
 
   public constructor(GameserverOverlaySpec: GameserverOverlaySpec){
     this.Game = GameserverOverlaySpec.Game;
     this.StorageClassName = GameserverOverlaySpec.StorageClassName;
-    this.UpdateMechanism = GameserverOverlaySpec.UpdateMechanism;
+    this.StorageStrategy = GameserverOverlaySpec.StorageStrategy;
+    this.Status = GameserverOverlaySpec.Status;
     return this;
   };
+
+  public SetStatus(message: string, reason: StatusReasons) {
+    const now = new Date();
+    const GameserverOverlayStatus: GameserverOverlayStatus = {
+      lastTransitionTime: now,
+      message: message,
+      reason: reason,
+    }
+    this.Status = GameserverOverlayStatus;
+  }
 }
 
 export interface GameserverOverlaySpec {
   /**
    * Game defines the game for this GameserverOverlay instance
    */
-  Game: GameEnum;
+  Game: Games;
 
   /**
    * StorageClassName defines the storageclass that will be used to store the files for this GameserverOverlay
@@ -36,22 +48,17 @@ export interface GameserverOverlaySpec {
   StorageClassName: string;
 
   /**
-   * UpdateMechanism selects which update mechanism will be used for this GSO
+   * StorageStrategy selects which storage mechanism will be used for this GSO
    */
-  UpdateMechanism: UpdateMechanismEnum;
+  StorageStrategy: StorageStrategies;
+
+  /**
+   * Status reflects the status of this GSO
+   */
+  Status: GameserverOverlayStatus
 }
 
 export interface GameserverOverlayStatus {
-  conditions: GameserverOverlayStatusCondition[];
-}
-
-export const details = {
-  plural: 'GameserverOverlays',
-  scope: 'Namespaced',
-  shortName: 'gsoverlay',
-};
-
-type GameserverOverlayStatusCondition = {
   /**
    * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
    */
@@ -63,33 +70,13 @@ type GameserverOverlayStatusCondition = {
   message: string;
 
   /**
-   * observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.
+   * reason contains a programmatic identifier indicating the reason for the condition's last transition.
    */
-  observedGeneration?: number;
+  reason: StatusReasons;
+}
 
-  /**
-   * reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.
-   */
-  reason: string;
-
-  /**
-   * status of the condition, one of True, False, Unknown.
-   */
-  status: string;
-
-  /**
-   * base info
-   */
-  baseInfo: {
-    // extended status info
-    extendedStatus: ExtendedStatusEnum;
-    // unix timestamp for last time gameserver was updated
-    lastUpdated: number;
-    // Build ID for current version
-    currentBuildId: number;
-    // Build ID for target version
-    targetBuildID: number;
-    // PVC Name for current version
-    persistentVolumeClaimName: string;
-  };
+export const details = {
+  plural: 'GameserverOverlays',
+  scope: 'Namespaced',
+  shortName: 'gsoverlay',
 };

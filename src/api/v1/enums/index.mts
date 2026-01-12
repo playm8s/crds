@@ -1,17 +1,18 @@
 'use strict';
 
-export enum GameEnum {
-  "csgo",
-  "cs2",
+export enum Games {
+  csgo = 'csgo',
+  cs2 = 'cs2',
 }
 
-export enum UpdateMechanismEnum {
-  "raw",
-  "overlayfs",
+export enum StorageStrategies {
+  raw = 'raw',
+  overlayfs = 'overlayfs',
 }
 
-export enum ExtendedStatusEnum {
-  "ok",
-  "updating",
-  "error",
+export enum StatusReasons {
+  created = 'created',
+  updated = 'updated',
+  deleted = 'deleted',
+  modified = 'modified',
 }

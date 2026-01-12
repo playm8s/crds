@@ -1,22 +1,22 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "esModuleInterop": true,
     "lib": [
       "es2024"
     ],
-    "module": "NodeNext",
+    "module": "nodenext",
     "outDir": "./dist",
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "rootDir": "./src",
     "strict": true,
     "target": "es2024",
     "useUnknownInCatchVariables": false,
     "declaration": true,
+    "moduleResolution": "nodenext",
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "**/*.ts",
     "**/*.mts",
   ]
 }
