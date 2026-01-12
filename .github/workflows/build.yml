@@ -1,4 +1,4 @@
-name: Build CRDs, Publish NPM Package
+name: Build CRDs
 
 on:
   push:
