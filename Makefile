@@ -1,7 +1,8 @@
 SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
-all: build-crds
+all: build
 
-build-crds:
-	cd types && npx pepr crd generate --output ../crds
+build:
+	npx tsc
+	cd src && npx pepr crd generate --output ../crds

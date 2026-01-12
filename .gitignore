@@ -2,3 +2,4 @@ node_modules/
 
 # gitignored to prevent local builds from being committed to repo
 crds/
+dist/

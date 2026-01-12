@@ -47,10 +47,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release
+      - name: Create tarball of crds
+        shell: bash
+        run: |
+          tar -cvf crds.tar crds/
+
+      - name: Create Github Release
         uses: softprops/action-gh-release@v2
         with:
           make_latest: true
           generate_release_notes: true
           files: |
-            crds/**
+            crds.tar
