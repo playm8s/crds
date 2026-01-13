@@ -1,6 +1,6 @@
 {
   "name": "@playm8s/crds",
-  "version": "0.4.57",
+  "version": "0.4.58",
   "description": "crds for playm8s",
   "keywords": [],
   "homepage": "https://github.com/playm8s/crds#readme",
@@ -25,6 +25,7 @@
     "@playm8s:registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
     "esbuild": "^0.27.2",
@@ -38,5 +39,9 @@
     "prompts": "^2.4.2",
     "typescript": "^5.8.3",
     "uuid": "^13.0.0"
+  },
+  "dependencies": {
+    "@dot-i/k8s-operator": "github:chaosfinity/k8s-operator-node#esmSupport",
+    "@kubernetes/client-node": "^1.4.0"
   }
 }

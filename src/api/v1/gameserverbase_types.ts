@@ -5,6 +5,9 @@
 // Version: v1
 // Domain: io
 
+import KubernetesObject from '@dot-i/k8s-operator';
+import { V1ObjectMeta } from '@kubernetes/client-node';
+
 import {
   Games,
   StorageStrategies,
@@ -16,16 +19,22 @@ export default class GameserverBase implements GameserverBaseSpec {
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
   public Status: GameserverBaseStatus;
+  public metadata: V1ObjectMeta | undefined;
 
   public constructor(GameserverBaseSpec: GameserverBaseSpec) {
     this.Game = GameserverBaseSpec.Game;
     this.StorageClassName = GameserverBaseSpec.StorageClassName;
     this.StorageStrategy = GameserverBaseSpec.StorageStrategy;
-    this.Status = GameserverBaseSpec.Status;
+    this.Status = GameserverBaseSpec.Status || {
+      lastTransitionTime: new Date(),
+      message: 'unknown status',
+      reason: StatusReasons.unknown,
+    };
+    this.metadata = GameserverBaseSpec.metadata
     return this;
   };
 
-  public SetStatus(message: string, reason: StatusReasons) {
+  public SetStatus(message: string, reason: StatusReasons): void {
     const now = new Date();
     const GameserverBaseStatus: GameserverBaseStatus = {
       lastTransitionTime: now,
@@ -34,6 +43,12 @@ export default class GameserverBase implements GameserverBaseSpec {
     }
     this.Status = GameserverBaseStatus;
   }
+}
+
+export interface GameserverBaseResource extends KubernetesObject {
+  spec: GameserverBaseSpec;
+  status: GameserverBaseStatus;
+  metadata?: V1ObjectMeta | undefined;
 }
 
 export interface GameserverBaseSpec {
@@ -55,7 +70,9 @@ export interface GameserverBaseSpec {
   /**
    * Status reflects the status of this GSB
    */
-  Status: GameserverBaseStatus
+  Status?: GameserverBaseStatus;
+
+  metadata?: V1ObjectMeta | undefined;
 }
 
 export interface GameserverBaseStatus {
@@ -73,10 +90,18 @@ export interface GameserverBaseStatus {
    * reason contains a programmatic identifier indicating the reason for the condition's last transition.
    */
   reason: StatusReasons;
+
+  /**
+   * observedGeneration
+   */
+  observedGeneration?: number;
 }
 
 export const details = {
-  plural: 'GameserverBases',
+  name: 'gameserverbase',
+  plural: 'gameserverbases',
+  group: 'pm8s.io',
+  version: 'v1',
   scope: 'Namespaced',
   shortName: 'gsbase',
 };

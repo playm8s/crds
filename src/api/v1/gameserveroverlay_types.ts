@@ -5,6 +5,9 @@
 // Version: v1
 // Domain: io
 
+import KubernetesObject from '@dot-i/k8s-operator';
+import { V1ObjectMeta } from '@kubernetes/client-node';
+
 import {
   Games,
   StorageStrategies,
@@ -16,16 +19,22 @@ export default class GameserverOverlay implements GameserverOverlaySpec {
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
   public Status: GameserverOverlayStatus;
+  public metadata: V1ObjectMeta | undefined;
 
-  public constructor(GameserverOverlaySpec: GameserverOverlaySpec){
+  public constructor(GameserverOverlaySpec: GameserverOverlaySpec) {
     this.Game = GameserverOverlaySpec.Game;
     this.StorageClassName = GameserverOverlaySpec.StorageClassName;
     this.StorageStrategy = GameserverOverlaySpec.StorageStrategy;
-    this.Status = GameserverOverlaySpec.Status;
+    this.Status = GameserverOverlaySpec.Status || {
+      lastTransitionTime: new Date(),
+      message: 'unknown status',
+      reason: StatusReasons.unknown,
+    };
+    this.metadata = GameserverOverlaySpec.metadata
     return this;
   };
 
-  public SetStatus(message: string, reason: StatusReasons) {
+  public SetStatus(message: string, reason: StatusReasons): void {
     const now = new Date();
     const GameserverOverlayStatus: GameserverOverlayStatus = {
       lastTransitionTime: now,
@@ -34,6 +43,12 @@ export default class GameserverOverlay implements GameserverOverlaySpec {
     }
     this.Status = GameserverOverlayStatus;
   }
+}
+
+export interface GameserverOverlayResource extends KubernetesObject {
+  spec: GameserverOverlaySpec;
+  status: GameserverOverlayStatus;
+  metadata: V1ObjectMeta | undefined;
 }
 
 export interface GameserverOverlaySpec {
@@ -48,14 +63,16 @@ export interface GameserverOverlaySpec {
   StorageClassName: string;
 
   /**
-   * StorageStrategy selects which storage mechanism will be used for this GSO
+   * StorageStrategy selects which storage mechanism will be used for this GSB
    */
   StorageStrategy: StorageStrategies;
 
   /**
-   * Status reflects the status of this GSO
+   * Status reflects the status of this GSB
    */
-  Status: GameserverOverlayStatus
+  Status?: GameserverOverlayStatus;
+
+  metadata?: V1ObjectMeta | undefined;
 }
 
 export interface GameserverOverlayStatus {
@@ -73,10 +90,18 @@ export interface GameserverOverlayStatus {
    * reason contains a programmatic identifier indicating the reason for the condition's last transition.
    */
   reason: StatusReasons;
+
+  /**
+   * observedGeneration
+   */
+  observedGeneration?: number;
 }
 
 export const details = {
-  plural: 'GameserverOverlays',
+  name: 'gameserveroverlay',
+  plural: 'gameserveroverlays',
+  group: 'pm8s.io',
+  version: 'v1',
   scope: 'Namespaced',
   shortName: 'gsoverlay',
 };

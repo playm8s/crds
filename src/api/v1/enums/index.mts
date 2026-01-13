@@ -15,4 +15,5 @@ export enum StatusReasons {
   updated = 'updated',
   deleted = 'deleted',
   modified = 'modified',
+  unknown = 'unknown',
 }

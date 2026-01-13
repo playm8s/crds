@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "lib": [
       "es2024"
@@ -18,5 +18,6 @@
   },
   "include": [
     "**/*.mts",
+    "**/*.d.mts",
   ]
 }
