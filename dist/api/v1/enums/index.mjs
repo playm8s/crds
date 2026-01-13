@@ -15,4 +15,5 @@ export var StatusReasons;
     StatusReasons["updated"] = "updated";
     StatusReasons["deleted"] = "deleted";
     StatusReasons["modified"] = "modified";
+    StatusReasons["unknown"] = "unknown";
 })(StatusReasons || (StatusReasons = {}));

@@ -1,15 +1,15 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: gameserveroverlays.pm8s.io
+  name: gameservers.pm8s.io
 spec:
   group: pm8s.io
   names:
-    kind: GameserverOverlay
-    plural: gameserveroverlays
-    singular: gameserveroverlay
+    kind: Gameserver
+    plural: gameservers
+    singular: gameserver
     shortNames:
-      - gsoverlay
+      - gs
   scope: Namespaced
   versions:
     - name: v1
@@ -21,20 +21,29 @@ spec:
           properties:
             spec:
               type: object
-              description: GameserverOverlaySpec defines the desired state of
-                GameserverOverlay
+              description: GameserverSpec defines the desired state of Gameserver
               properties:
                 game:
                   type: string
-                  description: Game defines the game for this GameserverOverlay instance
+                  description: Game defines the game for this Gameserver instance
+                gameserverBase:
+                  type: string
+                  description: GameserverBase defines the name of the GameserverBase this
+                    Gameserver is... based on
+                gameserverOverlays:
+                  type: array
+                  items:
+                    type: string
+                  description: GameserverOverlays defines a list of GameserverOverlay(s) to apply
+                    to the GameserverBase in order to create the Gameserver
                 storageClassName:
                   type: string
                   description: StorageClassName defines the storageclass that will be used to
-                    store the files for this GameserverOverlay
+                    store the files for this Gameserver
                 storageStrategy:
                   type: string
                   description: StorageStrategy selects which storage mechanism will be used for
-                    this GSB
+                    this GS
                 status:
                   type: object
                   properties:
@@ -60,7 +69,7 @@ spec:
                     - lastTransitionTime
                     - message
                     - reason
-                  description: Status reflects the status of this GSB
+                  description: Status reflects the status of this GS
                 metadata:
                   type: object
                   properties:
@@ -325,12 +334,13 @@ spec:
                         th-objects/names#uids"
               required:
                 - game
+                - gameserverBase
+                - gameserverOverlays
                 - storageClassName
                 - storageStrategy
             status:
               type: object
-              description: GameserverOverlayStatus defines the observed state of
-                GameserverOverlay
+              description: GameserverStatus defines the observed state of Gameserver
               properties:
                 conditions:
                   type: array

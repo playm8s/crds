@@ -10,5 +10,6 @@ export declare enum StatusReasons {
     created = "created",
     updated = "updated",
     deleted = "deleted",
-    modified = "modified"
+    modified = "modified",
+    unknown = "unknown"
 }

@@ -1,9 +1,5 @@
 'use strict';
-import * as Enums from "./enums/index.mjs";
-import { default as GameserverBase } from "./gameserverbase_types.mjs";
-import { default as GameserverOverlay } from "./gameserveroverlay_types.mjs";
-export const v1 = {
-    Enums: Enums,
-    GameserverBase: GameserverBase,
-    GameserverOverlay: GameserverOverlay,
-};
+export * as Enums from "./enums/index.mjs";
+export * as Gameserver from "./gameserver_types.js";
+export * as GameserverBase from "./gameserverbase_types.js";
+export * as GameserverOverlay from "./gameserveroverlay_types.js";
