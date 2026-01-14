@@ -35,5 +35,5 @@ export const details = {
     group: 'pm8s.io',
     version: 'v1',
     scope: 'Namespaced',
-    shortName: 'gsoverlay',
+    shortName: 'gameserveroverlay',
 };

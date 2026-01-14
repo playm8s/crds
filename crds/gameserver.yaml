@@ -9,7 +9,7 @@ spec:
     plural: gameservers
     singular: gameserver
     shortNames:
-      - gs
+      - gameserver
   scope: Namespaced
   versions:
     - name: v1

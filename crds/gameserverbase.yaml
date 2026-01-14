@@ -9,7 +9,7 @@ spec:
     plural: gameserverbases
     singular: gameserverbase
     shortNames:
-      - gsbase
+      - gameserverbase
   scope: Namespaced
   versions:
     - name: v1

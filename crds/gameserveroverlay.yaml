@@ -9,7 +9,7 @@ spec:
     plural: gameserveroverlays
     singular: gameserveroverlay
     shortNames:
-      - gsoverlay
+      - gameserveroverlay
   scope: Namespaced
   versions:
     - name: v1
