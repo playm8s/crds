@@ -5,7 +5,7 @@
 // Version: v1
 // Domain: io
 
-import KubernetesObject from '@dot-i/k8s-operator';
+import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
 
 import {
