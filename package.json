@@ -1,6 +1,6 @@
 {
   "name": "@playm8s/crds",
-  "version": "0.4.67",
+  "version": "0.4.68",
   "description": "crds for playm8s",
   "keywords": [],
   "homepage": "https://github.com/playm8s/crds#readme",
@@ -43,6 +43,7 @@
     "@kubernetes/client-node": "^1.4.0",
     "@thehonker/k8s-operator": "^3.1.1-alpha.9",
     "cdk8s": "^2.70.43",
-    "cdk8s-plus-33": "^2.4.20"
+    "cdk8s-plus-33": "^2.4.20",
+    "constructs": "^10.4.5"
   }
 }
