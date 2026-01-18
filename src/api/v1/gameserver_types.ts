@@ -5,6 +5,8 @@
 // Version: v1
 // Domain: io
 
+
+import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
 
@@ -53,6 +55,11 @@ export interface GameserverResource extends KubernetesObject {
   spec: GameserverSpec;
   status: GameserverStatus;
   metadata?: V1ObjectMeta | undefined;
+}
+
+export class ApiResource implements cdk8splus.IApiResource {
+  apiGroup: string = 'pm8s.io';
+  resourceType: string = 'gameserver';
 }
 
 export interface GameserverSpec {
