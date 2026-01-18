@@ -29,6 +29,10 @@ export default class GameserverOverlay {
         this.Status = GameserverOverlayStatus;
     }
 }
+export class ApiResource {
+    apiGroup = 'pm8s.io';
+    resourceType = 'gameserveroverlay';
+}
 export const details = {
     name: 'gameserveroverlay',
     plural: 'gameserveroverlays',

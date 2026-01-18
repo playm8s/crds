@@ -29,6 +29,10 @@ export default class GameserverBase {
         this.Status = GameserverBaseStatus;
     }
 }
+export class ApiResource {
+    apiGroup = 'pm8s.io';
+    resourceType = 'gameserverbase';
+}
 export const details = {
     name: 'gameserverbase',
     plural: 'gameserverbases',
