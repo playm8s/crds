@@ -47,7 +47,15 @@ jobs:
 
       - name: Lint, Generate crds, Compile Typescript, Git push
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          export NODE_ENV=development
+          cat <<EOF >> $HOME/.npmrc
+          //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+          @playm8s:registry=https://npm.pkg.github.com/
+          @thehonker:registry=https://npm.pkg.github.com/
+          EOF
           npm install --include=dev --legacy-peer-deps
           make lint
           make build

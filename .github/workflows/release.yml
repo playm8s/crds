@@ -42,6 +42,11 @@ jobs:
       - name: NPM publish
         shell: bash
         run: |
+          cat <<EOF >> $HOME/.npmrc
+          //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+          @playm8s:registry=https://npm.pkg.github.com/
+          @thehonker:registry=https://npm.pkg.github.com/
+          EOF
           npm install --include=dev --legacy-peer-deps
           npm publish
         env:
