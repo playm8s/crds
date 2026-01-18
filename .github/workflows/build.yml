@@ -57,7 +57,6 @@ jobs:
           @thehonker:registry=https://npm.pkg.github.com/
           EOF
           npm install --include=dev --legacy-peer-deps
-          make lint
           make build
           git add -f crds/**
           git add -f dist/**

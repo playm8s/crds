@@ -12,3 +12,6 @@ build: lint
 
 apply-crds: build
 	find ./crds -type f -name '*.yaml' -exec kubectl apply -f {} \;
+
+update-libraries:
+	npm install --save @thehonker/k8s-operator@latest
