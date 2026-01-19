@@ -1,5 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
+import { Games, StorageStrategies, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameserverbase';
@@ -39,9 +40,9 @@ export class GameserverBase extends ApiObject {
             ...GameserverBase.GVK,
             ...props,
         });
-        this.Game = props.spec.Game;
-        this.StorageClassName = props.spec.StorageClassName;
-        this.StorageStrategy = props.spec.StorageStrategy;
+        this.Game = props?.spec?.Game || Games.csgo;
+        this.StorageClassName = props?.spec?.StorageClassName || '';
+        this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
     }
     /**
      * Renders the object to Kubernetes JSON.

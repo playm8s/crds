@@ -42,8 +42,8 @@ export declare class GameserverBase extends ApiObject implements GameserverBaseS
     toJson(): unknown;
 }
 export interface GameserverBaseProps {
-    readonly metadata: ApiObjectMetadata;
-    readonly spec: GameserverBaseSpec;
+    readonly metadata?: ApiObjectMetadata;
+    readonly spec?: GameserverBaseSpec;
 }
 export declare function toJson_GameserverBaseProps(obj: GameserverBaseProps | undefined): Record<string, unknown> | undefined;
 export declare function toJson_GameserverBaseSpec(obj: GameserverBaseSpec | undefined): Record<string, unknown> | undefined;
