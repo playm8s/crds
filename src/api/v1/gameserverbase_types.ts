@@ -68,9 +68,9 @@ export class GameserverBase extends ApiObject implements GameserverBaseSpec {
       ...GameserverBase.GVK,
       ...props,
     });
-    this.Game = props.spec.Game;
-    this.StorageClassName = props.spec.StorageClassName;
-    this.StorageStrategy = props.spec.StorageStrategy;
+    this.Game = props?.spec?.Game || Games.csgo;
+    this.StorageClassName = props?.spec?.StorageClassName || '';
+    this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
   }
 
   /**
@@ -87,8 +87,8 @@ export class GameserverBase extends ApiObject implements GameserverBaseSpec {
 }
 
 export interface GameserverBaseProps {
-  readonly metadata: ApiObjectMetadata;
-  readonly spec: GameserverBaseSpec;
+  readonly metadata?: ApiObjectMetadata;
+  readonly spec?: GameserverBaseSpec;
 }
 
 export function toJson_GameserverBaseProps(obj: GameserverBaseProps | undefined): Record<string, unknown> | undefined {

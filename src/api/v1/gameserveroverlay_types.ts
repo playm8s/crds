@@ -69,9 +69,9 @@ export class GameserverOverlay extends ApiObject implements GameserverOverlaySpe
       ...GameserverOverlay.GVK,
       ...props,
     });
-    this.Game = props.spec.Game;
-    this.StorageClassName = props.spec.StorageClassName;
-    this.StorageStrategy = props.spec.StorageStrategy;
+    this.Game = props?.spec?.Game || Games.csgo;
+    this.StorageClassName = props?.spec?.StorageClassName || '';
+    this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
   }
 
   /**
@@ -88,8 +88,8 @@ export class GameserverOverlay extends ApiObject implements GameserverOverlaySpe
 }
 
 export interface GameserverOverlayProps {
-  readonly metadata: ApiObjectMetadata;
-  readonly spec: GameserverOverlaySpec;
+  readonly metadata?: ApiObjectMetadata;
+  readonly spec?: GameserverOverlaySpec;
 }
 
 export function toJson_GameserverOverlayProps(obj: GameserverOverlayProps | undefined): Record<string, unknown> | undefined {
