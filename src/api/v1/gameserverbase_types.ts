@@ -10,42 +10,14 @@ import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
 
+import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
+import { Construct } from 'constructs';
+
 import {
   Games,
   StorageStrategies,
   StatusReasons,
 } from './enums/index.mjs';
-
-export default class GameserverBase implements GameserverBaseSpec {
-  public Game: Games;
-  public StorageClassName: string;
-  public StorageStrategy: StorageStrategies;
-  public Status: GameserverBaseStatus;
-  public metadata: V1ObjectMeta | undefined;
-
-  public constructor(GameserverBaseSpec: GameserverBaseSpec) {
-    this.Game = GameserverBaseSpec.Game;
-    this.StorageClassName = GameserverBaseSpec.StorageClassName;
-    this.StorageStrategy = GameserverBaseSpec.StorageStrategy;
-    this.Status = GameserverBaseSpec.Status || {
-      lastTransitionTime: new Date(),
-      message: 'unknown status',
-      reason: StatusReasons.unknown,
-    };
-    this.metadata = GameserverBaseSpec.metadata
-    return this;
-  };
-
-  public SetStatus(message: string, reason: StatusReasons): void {
-    const now = new Date();
-    const GameserverBaseStatus: GameserverBaseStatus = {
-      lastTransitionTime: now,
-      message: message,
-      reason: reason,
-    }
-    this.Status = GameserverBaseStatus;
-  }
-}
 
 export interface GameserverBaseResource extends KubernetesObject {
   spec: GameserverBaseSpec;
@@ -56,6 +28,88 @@ export interface GameserverBaseResource extends KubernetesObject {
 export class ApiResource implements cdk8splus.IApiResource {
   apiGroup: string = 'pm8s.io';
   resourceType: string = 'gameserverbase';
+}
+
+export class GameserverBase extends ApiObject implements GameserverBaseSpec {
+  public Game: Games;
+  public StorageClassName: string;
+  public StorageStrategy: StorageStrategies;
+
+  /**
+   * Returns the apiVersion and kind for "Gameserver"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'pm8s.io/v1',
+    kind: 'Gameserver',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "Gameserver".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: GameserverBaseProps): unknown {
+    return {
+      ...GameserverBase.GVK,
+      ...toJson_GameserverBaseProps(props),
+    };
+  }
+
+  /**
+   * Defines a "Gameserver" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: GameserverBaseProps) {
+    super(scope, id, {
+      ...GameserverBase.GVK,
+      ...props,
+    });
+    this.Game = props.spec.Game;
+    this.StorageClassName = props.spec.StorageClassName;
+    this.StorageStrategy = props.spec.StorageStrategy;
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): unknown {
+    const resolved = super.toJson();
+
+    return {
+      ...GameserverBase.GVK,
+      ...toJson_GameserverBaseProps(resolved),
+    };
+  }
+}
+
+export interface GameserverBaseProps {
+  readonly metadata: ApiObjectMetadata;
+  readonly spec: GameserverBaseSpec;
+}
+
+export function toJson_GameserverBaseProps(obj: GameserverBaseProps | undefined): Record<string, unknown> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_GameserverBaseSpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+
+export function toJson_GameserverBaseSpec(obj: GameserverBaseSpec | undefined): Record<string, unknown> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'game': obj.Game,
+    'storageClassName': obj.StorageClassName,
+    'storageStrategy': obj.StorageStrategy,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 
 export interface GameserverBaseSpec {
@@ -78,8 +132,6 @@ export interface GameserverBaseSpec {
    * Status reflects the status of this GSB
    */
   Status?: GameserverBaseStatus;
-
-  metadata?: V1ObjectMeta | undefined;
 }
 
 export interface GameserverBaseStatus {
