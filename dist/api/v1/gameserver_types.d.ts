@@ -1,18 +1,9 @@
 import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
+import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
+import { Construct } from 'constructs';
 import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
-export default class Gameserver implements GameserverSpec {
-    Game: Games;
-    StorageClassName: string;
-    StorageStrategy: StorageStrategies;
-    Status: GameserverStatus;
-    metadata: V1ObjectMeta | undefined;
-    GameserverBase: string;
-    GameserverOverlays: string[];
-    constructor(GameserverSpec: GameserverSpec);
-    SetStatus(message: string, reason: StatusReasons): void;
-}
 export interface GameserverResource extends KubernetesObject {
     spec: GameserverSpec;
     status: GameserverStatus;
@@ -22,6 +13,42 @@ export declare class ApiResource implements cdk8splus.IApiResource {
     apiGroup: string;
     resourceType: string;
 }
+export declare class Gameserver extends ApiObject implements GameserverSpec {
+    Game: Games;
+    StorageClassName: string;
+    StorageStrategy: StorageStrategies;
+    GameserverBase: string;
+    GameserverOverlays: string[];
+    /**
+     * Returns the apiVersion and kind for "Gameserver"
+     */
+    static readonly GVK: GroupVersionKind;
+    /**
+     * Renders a Kubernetes manifest for "Gameserver".
+     *
+     * This can be used to inline resource manifests inside other objects (e.g. as templates).
+     *
+     * @param props initialization props
+     */
+    static manifest(props: GameserverProps): unknown;
+    /**
+     * Defines a "Gameserver" API object
+     * @param scope the scope in which to define this object
+     * @param id a scope-local name for the object
+     * @param props initialization props
+     */
+    constructor(scope: Construct, id: string, props: GameserverProps);
+    /**
+     * Renders the object to Kubernetes JSON.
+     */
+    toJson(): unknown;
+}
+export interface GameserverProps {
+    readonly metadata: ApiObjectMetadata;
+    readonly spec: GameserverSpec;
+}
+export declare function toJson_GameserverProps(obj: GameserverProps | undefined): Record<string, unknown> | undefined;
+export declare function toJson_GameserverSpec(obj: GameserverSpec | undefined): Record<string, unknown> | undefined;
 export interface GameserverSpec {
     /**
      * Game defines the game for this Gameserver instance
@@ -47,7 +74,6 @@ export interface GameserverSpec {
      * Status reflects the status of this GS
      */
     Status?: GameserverStatus;
-    metadata?: V1ObjectMeta | undefined;
 }
 export interface GameserverStatus {
     /**
