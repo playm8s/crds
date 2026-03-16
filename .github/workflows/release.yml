@@ -12,7 +12,7 @@ permissions:
   packages: write
 
 concurrency:
-  group: playm8s-crds
+  group: crds
   cancel-in-progress: false
 
 defaults:
@@ -31,7 +31,7 @@ jobs:
         with:
           token: "${{ secrets.GH_PAT }}"
           clean: true
-          fetch-depth: 1
+          fetch-depth: 20
 
       - name: Setup nodejs
         uses: actions/setup-node@v4
@@ -64,6 +64,7 @@ jobs:
           generate_release_notes: true
           files: |
             crds.tar
+            crds/*
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -76,9 +77,9 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ github.token }}
 
-      - name: Extract metadata (tags, labels) for Docker (Operator image build)
+      - name: Extract metadata (tags, labels) for Docker (CRD Job image build)
         id: docker_meta
         uses: docker/metadata-action@v5
         with:
@@ -87,10 +88,10 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest
 
-      - name: Build and Push Operator Image
+      - name: Build and Push CRD Job Image
         uses: docker/bake-action@v6
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           push: true
           source: .

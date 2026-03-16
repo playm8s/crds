@@ -11,7 +11,7 @@ permissions:
   packages: write
 
 concurrency:
-  group: playm8s-crds
+  group: crds
   cancel-in-progress: false
 
 defaults:
@@ -31,7 +31,7 @@ jobs:
           token: "${{ secrets.GH_PAT }}"
           ref: main
           clean: true
-          fetch-depth: 1
+          fetch-depth: 20
           fetch-tags: true
           set-safe-directory: true
 
@@ -48,8 +48,9 @@ jobs:
       - name: Lint, Generate crds, Compile Typescript, Git push
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
+          COMMIT="$(git rev-parse --short --verify main)"
           export NODE_ENV=development
           cat <<EOF >> $HOME/.npmrc
           //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
@@ -57,11 +58,14 @@ jobs:
           @thehonker:registry=https://npm.pkg.github.com/
           EOF
           npm install --include=dev --legacy-peer-deps
-          make build
+          npx tsc
+          cd "${GITHUB_WORKSPACE}/src" && npx pepr crd generate --output ../crds
+          cd "${GITHUB_WORKSPACE}"
           git add -f crds/**
           git add -f dist/**
           git diff
-          git commit --allow-empty -m "${GITHUB_REF_NAME%-*} - Build for ${{ github.sha }}"
+          git diff --staged
+          git diff --quiet && git diff --staged --quiet || git commit -m "${GITHUB_REF_NAME%-*} - Build for ${COMMIT}"
           git tag "${GITHUB_REF_NAME%-*}"
           git push
           git push --tags
