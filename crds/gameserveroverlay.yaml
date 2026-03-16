@@ -1,0 +1,57 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: gameserveroverlays.pm8s.io
+spec:
+  group: pm8s.io
+  names:
+    kind: gameserveroverlay
+    plural: gameserveroverlays
+    singular: gameserveroverlay
+    shortNames:
+      - gameserveroverlay
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              description: gameserveroverlaySpec defines the desired state of
+                gameserveroverlay
+              properties:
+                game:
+                  type: string
+                  description: Game defines the game for this GameserverOverlay instance
+                storageClassName:
+                  type: string
+                  description: StorageClassName defines the storageclass that will be used to
+                    store the files for this GameserverOverlay
+                storageStrategy:
+                  type: string
+                  description: StorageStrategy selects which storage mechanism will be used for
+                    this GSB
+              required:
+                - game
+                - storageClassName
+                - storageStrategy
+            status:
+              type: object
+              description: gameserveroverlayStatus defines the observed state of
+                gameserveroverlay
+              properties:
+                conditions:
+                  type: array
+                  description: Conditions describing the current state
+                  items:
+                    type: object
+                    description: Condition contains details for one aspect of the current state of
+                      this API Resource.
+                    properties: {}
+                    required: []
+      subresources:
+        status: {}
