@@ -3,4 +3,4 @@
 set -exu
 
 # Apply CRDs
-find /work -type f -name '*.yaml' -exec kubectl apply -f {} \;
+find /crds -type f -name '*.yaml' -exec kubectl apply -f {} \;
