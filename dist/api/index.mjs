@@ -1,2 +1,0 @@
-'use strict';
-export * from './v1/index.mjs';

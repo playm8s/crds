@@ -49,6 +49,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
   public StorageStrategy: StorageStrategies;
   public GameserverBase: string;
   public GameserverOverlays: string[];
+  public status?: gameserverStatus;
 
   /**
    * Returns the apiVersion and kind for "gameserver"
@@ -88,6 +89,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
     this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
     this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
     this.GameserverOverlays = props?.spec?.GameserverOverlays || [];
+    this.status = props?.status;
   }
 
   /**
@@ -106,6 +108,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
 export interface gameserverProps {
   readonly metadata?: ApiObjectMetadata;
   readonly spec?: gameserverSpec;
+  readonly status?: gameserverStatus;
 }
 
 export function toJson_gameserverProps(

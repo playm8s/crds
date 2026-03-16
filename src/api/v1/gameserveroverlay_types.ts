@@ -47,6 +47,7 @@ export class gameserveroverlay extends ApiObject implements gameserveroverlaySpe
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
+  public status?: gameserveroverlayStatus;
 
   /**
    * Returns the apiVersion and kind for "gameserveroverlay"
@@ -84,6 +85,7 @@ export class gameserveroverlay extends ApiObject implements gameserveroverlaySpe
     this.Game = props?.spec?.Game || Games.csgo;
     this.StorageClassName = props?.spec?.StorageClassName || '';
     this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+    this.status = props?.status;
   }
 
   /**
@@ -102,6 +104,7 @@ export class gameserveroverlay extends ApiObject implements gameserveroverlaySpe
 export interface gameserveroverlayProps {
   readonly metadata?: ApiObjectMetadata;
   readonly spec?: gameserveroverlaySpec;
+  readonly status?: gameserveroverlayStatus;
 }
 
 export function toJson_gameserveroverlayProps(

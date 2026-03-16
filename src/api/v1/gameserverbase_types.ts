@@ -47,6 +47,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
+  public status?: gameserverbaseStatus;
 
   /**
    * Returns the apiVersion and kind for "gameserverbase"
@@ -84,6 +85,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
     this.Game = props?.spec?.Game || Games.csgo;
     this.StorageClassName = props?.spec?.StorageClassName || '';
     this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+    this.status = props?.status;
   }
 
   /**
@@ -102,6 +104,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
 export interface gameserverbaseProps {
   readonly metadata?: ApiObjectMetadata;
   readonly spec?: gameserverbaseSpec;
+  readonly status?: gameserverbaseStatus;
 }
 
 export function toJson_gameserverbaseProps(
