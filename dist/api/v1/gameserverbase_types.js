@@ -3,21 +3,33 @@ import { ApiObject } from 'cdk8s';
 import { Games, StorageStrategies, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
-    resourceType = 'gameserverbase';
+    resourceType = 'gameserverbases';
+    /**
+     * Return the IApiResource this object represents.
+     */
+    asApiResource() {
+        return this;
+    }
+    /**
+     * Return the non resource url this object represents.
+     */
+    asNonApiResource() {
+        return undefined;
+    }
 }
-export class GameserverBase extends ApiObject {
+export class gameserverbase extends ApiObject {
     Game;
     StorageClassName;
     StorageStrategy;
     /**
-     * Returns the apiVersion and kind for "Gameserver"
+     * Returns the apiVersion and kind for "gameserverbase"
      */
     static GVK = {
         apiVersion: 'pm8s.io/v1',
-        kind: 'Gameserver',
+        kind: 'gameserverbases',
     };
     /**
-     * Renders a Kubernetes manifest for "Gameserver".
+     * Renders a Kubernetes manifest for "gameserverbase".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
@@ -25,19 +37,19 @@ export class GameserverBase extends ApiObject {
      */
     static manifest(props) {
         return {
-            ...GameserverBase.GVK,
-            ...toJson_GameserverBaseProps(props),
+            ...gameserverbase.GVK,
+            ...toJson_gameserverbaseProps(props),
         };
     }
     /**
-     * Defines a "Gameserver" API object
+     * Defines a "gameserverbase" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
     constructor(scope, id, props) {
         super(scope, id, {
-            ...GameserverBase.GVK,
+            ...gameserverbase.GVK,
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
@@ -50,33 +62,46 @@ export class GameserverBase extends ApiObject {
     toJson() {
         const resolved = super.toJson();
         return {
-            ...GameserverBase.GVK,
-            ...toJson_GameserverBaseProps(resolved),
+            ...gameserverbase.GVK,
+            ...toJson_gameserverbaseProps(resolved),
         };
     }
 }
-export function toJson_GameserverBaseProps(obj) {
+export function toJson_gameserverbaseProps(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'metadata': obj.metadata,
-        'spec': toJson_GameserverBaseSpec(obj.spec),
+        metadata: obj.metadata,
+        spec: toJson_gameserverbaseSpec(obj.spec),
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
-export function toJson_GameserverBaseSpec(obj) {
+export function toJson_gameserverbaseSpec(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'game': obj.Game,
-        'storageClassName': obj.StorageClassName,
-        'storageStrategy': obj.StorageStrategy,
+        Game: obj.Game,
+        StorageClassName: obj.StorageClassName,
+        StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
+}
+export function toJson_gameserverbaseStatus(obj) {
+    if (obj === undefined) {
+        return undefined;
+    }
+    const result = {
+        lastTransitionTime: obj.lastTransitionTime,
+        message: obj.message,
+        reason: obj.reason,
+        observedGeneration: obj.observedGeneration,
+    };
+    // filter undefined values
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
 export const details = {
     name: 'gameserverbase',

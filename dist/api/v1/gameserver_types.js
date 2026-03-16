@@ -3,23 +3,35 @@ import { ApiObject } from 'cdk8s';
 import { Games, StorageStrategies, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
-    resourceType = 'gameserver';
+    resourceType = 'gameservers';
+    /**
+     * Return the IApiResource this object represents.
+     */
+    asApiResource() {
+        return this;
+    }
+    /**
+     * Return the non resource url this object represents.
+     */
+    asNonApiResource() {
+        return undefined;
+    }
 }
-export class Gameserver extends ApiObject {
+export class gameserver extends ApiObject {
     Game;
     StorageClassName;
     StorageStrategy;
     GameserverBase;
     GameserverOverlays;
     /**
-     * Returns the apiVersion and kind for "Gameserver"
+     * Returns the apiVersion and kind for "gameserver"
      */
     static GVK = {
         apiVersion: 'pm8s.io/v1',
-        kind: 'Gameserver',
+        kind: 'gameservers',
     };
     /**
-     * Renders a Kubernetes manifest for "Gameserver".
+     * Renders a Kubernetes manifest for "gameserver".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
@@ -27,19 +39,19 @@ export class Gameserver extends ApiObject {
      */
     static manifest(props) {
         return {
-            ...Gameserver.GVK,
-            ...toJson_GameserverProps(props),
+            ...gameserver.GVK,
+            ...toJson_gameserverProps(props),
         };
     }
     /**
-     * Defines a "Gameserver" API object
+     * Defines a "gameserver" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
     constructor(scope, id, props) {
         super(scope, id, {
-            ...Gameserver.GVK,
+            ...gameserver.GVK,
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
@@ -54,35 +66,48 @@ export class Gameserver extends ApiObject {
     toJson() {
         const resolved = super.toJson();
         return {
-            ...Gameserver.GVK,
-            ...toJson_GameserverProps(resolved),
+            ...gameserver.GVK,
+            ...toJson_gameserverProps(resolved),
         };
     }
 }
-export function toJson_GameserverProps(obj) {
+export function toJson_gameserverProps(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'metadata': obj.metadata,
-        'spec': toJson_GameserverSpec(obj.spec),
+        metadata: obj.metadata,
+        spec: toJson_gameserverSpec(obj.spec),
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
-export function toJson_GameserverSpec(obj) {
+export function toJson_gameserverSpec(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'game': obj.Game,
-        'gameserverBase': obj.GameserverBase,
-        'gameserverOverlays': obj.GameserverOverlays,
-        'storageClassName': obj.StorageClassName,
-        'storageStrategy': obj.StorageStrategy,
+        Game: obj.Game,
+        GameserverBase: obj.GameserverBase,
+        GameserverOverlays: obj.GameserverOverlays,
+        StorageClassName: obj.StorageClassName,
+        StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
+}
+export function toJson_gameserverStatus(obj) {
+    if (obj === undefined) {
+        return undefined;
+    }
+    const result = {
+        lastTransitionTime: obj.lastTransitionTime,
+        message: obj.message,
+        reason: obj.reason,
+        observedGeneration: obj.observedGeneration,
+    };
+    // filter undefined values
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
 export const details = {
     name: 'gameserver',

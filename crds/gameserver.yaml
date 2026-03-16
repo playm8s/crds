@@ -5,7 +5,7 @@ metadata:
 spec:
   group: pm8s.io
   names:
-    kind: Gameserver
+    kind: gameserver
     plural: gameservers
     singular: gameserver
     shortNames:
@@ -21,7 +21,7 @@ spec:
           properties:
             spec:
               type: object
-              description: GameserverSpec defines the desired state of Gameserver
+              description: gameserverSpec defines the desired state of gameserver
               properties:
                 game:
                   type: string
@@ -44,32 +44,6 @@ spec:
                   type: string
                   description: StorageStrategy selects which storage mechanism will be used for
                     this GS
-                status:
-                  type: object
-                  properties:
-                    lastTransitionTime:
-                      type: string
-                      format: date-time
-                      description: lastTransitionTime is the last time the condition transitioned from
-                        one status to another. This is not guaranteed to be set
-                        in happensBefore order across different conditions for a
-                        given object. It may be unset in some circumstances.
-                    message:
-                      type: string
-                      description: message is a human readable message indicating details about the
-                        transition. This may be an empty string.
-                    reason:
-                      type: string
-                      description: reason contains a programmatic identifier indicating the reason for
-                        the condition's last transition.
-                    observedGeneration:
-                      type: number
-                      description: observedGeneration
-                  required:
-                    - lastTransitionTime
-                    - message
-                    - reason
-                  description: Status reflects the status of this GS
               required:
                 - game
                 - gameserverBase
@@ -78,7 +52,7 @@ spec:
                 - storageStrategy
             status:
               type: object
-              description: GameserverStatus defines the observed state of Gameserver
+              description: gameserverStatus defines the observed state of gameserver
               properties:
                 conditions:
                   type: array

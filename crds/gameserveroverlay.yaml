@@ -5,7 +5,7 @@ metadata:
 spec:
   group: pm8s.io
   names:
-    kind: GameserverOverlay
+    kind: gameserveroverlay
     plural: gameserveroverlays
     singular: gameserveroverlay
     shortNames:
@@ -21,8 +21,8 @@ spec:
           properties:
             spec:
               type: object
-              description: GameserverOverlaySpec defines the desired state of
-                GameserverOverlay
+              description: gameserveroverlaySpec defines the desired state of
+                gameserveroverlay
               properties:
                 game:
                   type: string
@@ -35,40 +35,14 @@ spec:
                   type: string
                   description: StorageStrategy selects which storage mechanism will be used for
                     this GSB
-                status:
-                  type: object
-                  properties:
-                    lastTransitionTime:
-                      type: string
-                      format: date-time
-                      description: lastTransitionTime is the last time the condition transitioned from
-                        one status to another. This is not guaranteed to be set
-                        in happensBefore order across different conditions for a
-                        given object. It may be unset in some circumstances.
-                    message:
-                      type: string
-                      description: message is a human readable message indicating details about the
-                        transition. This may be an empty string.
-                    reason:
-                      type: string
-                      description: reason contains a programmatic identifier indicating the reason for
-                        the condition's last transition.
-                    observedGeneration:
-                      type: number
-                      description: observedGeneration
-                  required:
-                    - lastTransitionTime
-                    - message
-                    - reason
-                  description: Status reflects the status of this GSB
               required:
                 - game
                 - storageClassName
                 - storageStrategy
             status:
               type: object
-              description: GameserverOverlayStatus defines the observed state of
-                GameserverOverlay
+              description: gameserveroverlayStatus defines the observed state of
+                gameserveroverlay
               properties:
                 conditions:
                   type: array

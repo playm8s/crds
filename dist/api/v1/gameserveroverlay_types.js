@@ -3,21 +3,33 @@ import { ApiObject } from 'cdk8s';
 import { Games, StorageStrategies, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
-    resourceType = 'gameserveroverlay';
+    resourceType = 'gameserveroverlays';
+    /**
+     * Return the IApiResource this object represents.
+     */
+    asApiResource() {
+        return this;
+    }
+    /**
+     * Return the non resource url this object represents.
+     */
+    asNonApiResource() {
+        return undefined;
+    }
 }
-export class GameserverOverlay extends ApiObject {
+export class gameserveroverlay extends ApiObject {
     Game;
     StorageClassName;
     StorageStrategy;
     /**
-     * Returns the apiVersion and kind for "Gameserver"
+     * Returns the apiVersion and kind for "gameserveroverlay"
      */
     static GVK = {
         apiVersion: 'pm8s.io/v1',
-        kind: 'Gameserver',
+        kind: 'gameserveroverlays',
     };
     /**
-     * Renders a Kubernetes manifest for "Gameserver".
+     * Renders a Kubernetes manifest for "gameserveroverlay".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
@@ -25,19 +37,19 @@ export class GameserverOverlay extends ApiObject {
      */
     static manifest(props) {
         return {
-            ...GameserverOverlay.GVK,
-            ...toJson_GameserverOverlayProps(props),
+            ...gameserveroverlay.GVK,
+            ...toJson_gameserveroverlayProps(props),
         };
     }
     /**
-     * Defines a "Gameserver" API object
+     * Defines a "gameserveroverlay" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
     constructor(scope, id, props) {
         super(scope, id, {
-            ...GameserverOverlay.GVK,
+            ...gameserveroverlay.GVK,
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
@@ -50,33 +62,46 @@ export class GameserverOverlay extends ApiObject {
     toJson() {
         const resolved = super.toJson();
         return {
-            ...GameserverOverlay.GVK,
-            ...toJson_GameserverOverlayProps(resolved),
+            ...gameserveroverlay.GVK,
+            ...toJson_gameserveroverlayProps(resolved),
         };
     }
 }
-export function toJson_GameserverOverlayProps(obj) {
+export function toJson_gameserveroverlayProps(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'metadata': obj.metadata,
-        'spec': toJson_GameserverOverlaySpec(obj.spec),
+        metadata: obj.metadata,
+        spec: toJson_gameserveroverlaySpec(obj.spec),
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
-export function toJson_GameserverOverlaySpec(obj) {
+export function toJson_gameserveroverlaySpec(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
-        'game': obj.Game,
-        'storageClassName': obj.StorageClassName,
-        'storageStrategy': obj.StorageStrategy,
+        Game: obj.Game,
+        StorageClassName: obj.StorageClassName,
+        StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values
-    return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
+}
+export function toJson_gameserveroverlayStatus(obj) {
+    if (obj === undefined) {
+        return undefined;
+    }
+    const result = {
+        lastTransitionTime: obj.lastTransitionTime,
+        message: obj.message,
+        reason: obj.reason,
+        observedGeneration: obj.observedGeneration,
+    };
+    // filter undefined values
+    return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
 export const details = {
     name: 'gameserveroverlay',

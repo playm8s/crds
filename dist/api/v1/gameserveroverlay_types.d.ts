@@ -4,50 +4,58 @@ import { V1ObjectMeta } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
 import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
-export interface GameserverOverlayResource extends KubernetesObject {
-    spec: GameserverOverlaySpec;
-    status: GameserverOverlayStatus;
-    metadata: V1ObjectMeta | undefined;
+export interface gameserveroverlayResource extends KubernetesObject {
+    spec: gameserveroverlaySpec;
+    status: gameserveroverlayStatus;
+    metadata?: V1ObjectMeta | undefined;
 }
 export declare class ApiResource implements cdk8splus.IApiResource {
     apiGroup: string;
     resourceType: string;
+    /**
+     * Return the IApiResource this object represents.
+     */
+    asApiResource(): cdk8splus.IApiResource | undefined;
+    /**
+     * Return the non resource url this object represents.
+     */
+    asNonApiResource(): string | undefined;
 }
-export declare class GameserverOverlay extends ApiObject implements GameserverOverlaySpec {
+export declare class gameserveroverlay extends ApiObject implements gameserveroverlaySpec {
     Game: Games;
     StorageClassName: string;
     StorageStrategy: StorageStrategies;
     /**
-     * Returns the apiVersion and kind for "Gameserver"
+     * Returns the apiVersion and kind for "gameserveroverlay"
      */
     static readonly GVK: GroupVersionKind;
     /**
-     * Renders a Kubernetes manifest for "Gameserver".
+     * Renders a Kubernetes manifest for "gameserveroverlay".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
      * @param props initialization props
      */
-    static manifest(props: GameserverOverlayProps): unknown;
+    static manifest(props: gameserveroverlayProps): unknown;
     /**
-     * Defines a "Gameserver" API object
+     * Defines a "gameserveroverlay" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
-    constructor(scope: Construct, id: string, props: GameserverOverlayProps);
+    constructor(scope: Construct, id: string, props: gameserveroverlayProps);
     /**
      * Renders the object to Kubernetes JSON.
      */
     toJson(): unknown;
 }
-export interface GameserverOverlayProps {
+export interface gameserveroverlayProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec?: GameserverOverlaySpec;
+    readonly spec?: gameserveroverlaySpec;
 }
-export declare function toJson_GameserverOverlayProps(obj: GameserverOverlayProps | undefined): Record<string, unknown> | undefined;
-export declare function toJson_GameserverOverlaySpec(obj: GameserverOverlaySpec | undefined): Record<string, unknown> | undefined;
-export interface GameserverOverlaySpec {
+export declare function toJson_gameserveroverlayProps(obj: gameserveroverlayProps | undefined): Record<string, unknown> | undefined;
+export declare function toJson_gameserveroverlaySpec(obj: gameserveroverlaySpec | undefined): Record<string, unknown> | undefined;
+export interface gameserveroverlaySpec {
     /**
      * Game defines the game for this GameserverOverlay instance
      */
@@ -60,12 +68,8 @@ export interface GameserverOverlaySpec {
      * StorageStrategy selects which storage mechanism will be used for this GSB
      */
     StorageStrategy: StorageStrategies;
-    /**
-     * Status reflects the status of this GSB
-     */
-    Status?: GameserverOverlayStatus;
 }
-export interface GameserverOverlayStatus {
+export interface gameserveroverlayStatus {
     /**
      * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
      */
@@ -83,6 +87,7 @@ export interface GameserverOverlayStatus {
      */
     observedGeneration?: number;
 }
+export declare function toJson_gameserveroverlayStatus(obj: gameserveroverlayStatus | undefined): Record<string, unknown> | undefined;
 export declare const details: {
     name: string;
     plural: string;

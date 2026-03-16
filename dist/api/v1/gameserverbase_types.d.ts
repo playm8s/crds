@@ -4,50 +4,58 @@ import { V1ObjectMeta } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
 import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
-export interface GameserverBaseResource extends KubernetesObject {
-    spec: GameserverBaseSpec;
-    status: GameserverBaseStatus;
+export interface gameserverbaseResource extends KubernetesObject {
+    spec: gameserverbaseSpec;
+    status: gameserverbaseStatus;
     metadata?: V1ObjectMeta | undefined;
 }
 export declare class ApiResource implements cdk8splus.IApiResource {
     apiGroup: string;
     resourceType: string;
+    /**
+     * Return the IApiResource this object represents.
+     */
+    asApiResource(): cdk8splus.IApiResource | undefined;
+    /**
+     * Return the non resource url this object represents.
+     */
+    asNonApiResource(): string | undefined;
 }
-export declare class GameserverBase extends ApiObject implements GameserverBaseSpec {
+export declare class gameserverbase extends ApiObject implements gameserverbaseSpec {
     Game: Games;
     StorageClassName: string;
     StorageStrategy: StorageStrategies;
     /**
-     * Returns the apiVersion and kind for "Gameserver"
+     * Returns the apiVersion and kind for "gameserverbase"
      */
     static readonly GVK: GroupVersionKind;
     /**
-     * Renders a Kubernetes manifest for "Gameserver".
+     * Renders a Kubernetes manifest for "gameserverbase".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
      * @param props initialization props
      */
-    static manifest(props: GameserverBaseProps): unknown;
+    static manifest(props: gameserverbaseProps): unknown;
     /**
-     * Defines a "Gameserver" API object
+     * Defines a "gameserverbase" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
-    constructor(scope: Construct, id: string, props: GameserverBaseProps);
+    constructor(scope: Construct, id: string, props: gameserverbaseProps);
     /**
      * Renders the object to Kubernetes JSON.
      */
     toJson(): unknown;
 }
-export interface GameserverBaseProps {
+export interface gameserverbaseProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec?: GameserverBaseSpec;
+    readonly spec?: gameserverbaseSpec;
 }
-export declare function toJson_GameserverBaseProps(obj: GameserverBaseProps | undefined): Record<string, unknown> | undefined;
-export declare function toJson_GameserverBaseSpec(obj: GameserverBaseSpec | undefined): Record<string, unknown> | undefined;
-export interface GameserverBaseSpec {
+export declare function toJson_gameserverbaseProps(obj: gameserverbaseProps | undefined): Record<string, unknown> | undefined;
+export declare function toJson_gameserverbaseSpec(obj: gameserverbaseSpec | undefined): Record<string, unknown> | undefined;
+export interface gameserverbaseSpec {
     /**
      * Game defines the game for this GameserverBase instance
      */
@@ -60,12 +68,8 @@ export interface GameserverBaseSpec {
      * StorageStrategy selects which storage mechanism will be used for this GSB
      */
     StorageStrategy: StorageStrategies;
-    /**
-     * Status reflects the status of this GSB
-     */
-    Status?: GameserverBaseStatus;
 }
-export interface GameserverBaseStatus {
+export interface gameserverbaseStatus {
     /**
      * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
      */
@@ -83,6 +87,7 @@ export interface GameserverBaseStatus {
      */
     observedGeneration?: number;
 }
+export declare function toJson_gameserverbaseStatus(obj: gameserverbaseStatus | undefined): Record<string, unknown> | undefined;
 export declare const details: {
     name: string;
     plural: string;
