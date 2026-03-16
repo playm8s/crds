@@ -34,5 +34,19 @@ git commit -m "${VERSION} - $*"
 
 git tag "${VERSION}-build"
 
-git push \
-&& git push --tags || git tag -d "${VERSION}-build"
+if ! git push --follow-tags; then
+  echo "Push failed, attempting to pull --rebase and push again..."
+  if git pull --rebase; then
+    if ! git push --follow-tags; then
+      echo "Push failed again after rebase"
+      git tag -d "${VERSION}-build"
+      exit 1
+    fi
+  else
+    echo "Rebase failed"
+    git tag -d "${VERSION}-build"
+    exit 1
+  fi
+else
+  echo "Push successful"
+fi
