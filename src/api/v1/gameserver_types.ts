@@ -1,10 +1,9 @@
 'use strict';
 
-// Kind: Gameserver
+// Kind: gameserver
 // Group: pm8s
 // Version: v1
 // Domain: io
-
 
 import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
@@ -19,18 +18,32 @@ import {
   StatusReasons,
 } from './enums/index.mjs';
 
-export interface GameserverResource extends KubernetesObject {
-  spec: GameserverSpec;
-  status: GameserverStatus;
+export interface gameserverResource extends KubernetesObject {
+  spec: gameserverSpec;
+  status: gameserverStatus;
   metadata?: V1ObjectMeta | undefined;
 }
 
 export class ApiResource implements cdk8splus.IApiResource {
   apiGroup: string = 'pm8s.io';
-  resourceType: string = 'gameserver';
+  resourceType: string = 'gameservers';
+
+  /**
+   * Return the IApiResource this object represents.
+   */
+  public asApiResource(): cdk8splus.IApiResource | undefined {
+    return this;
+  }
+
+  /**
+   * Return the non resource url this object represents.
+   */
+  public asNonApiResource(): string | undefined {
+    return undefined;
+  }
 }
 
-export class Gameserver extends ApiObject implements GameserverSpec {
+export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
@@ -38,36 +51,36 @@ export class Gameserver extends ApiObject implements GameserverSpec {
   public GameserverOverlays: string[];
 
   /**
-   * Returns the apiVersion and kind for "Gameserver"
+   * Returns the apiVersion and kind for "gameserver"
    */
   public static readonly GVK: GroupVersionKind = {
     apiVersion: 'pm8s.io/v1',
-    kind: 'Gameserver',
-  }
+    kind: 'gameservers',
+  };
 
   /**
-   * Renders a Kubernetes manifest for "Gameserver".
+   * Renders a Kubernetes manifest for "gameserver".
    *
    * This can be used to inline resource manifests inside other objects (e.g. as templates).
    *
    * @param props initialization props
    */
-  public static manifest(props: GameserverProps): unknown {
+  public static manifest(props: gameserverProps): unknown {
     return {
-      ...Gameserver.GVK,
-      ...toJson_GameserverProps(props),
+      ...gameserver.GVK,
+      ...toJson_gameserverProps(props),
     };
   }
 
   /**
-   * Defines a "Gameserver" API object
+   * Defines a "gameserver" API object
    * @param scope the scope in which to define this object
    * @param id a scope-local name for the object
    * @param props initialization props
    */
-  public constructor(scope: Construct, id: string, props: GameserverProps) {
+  public constructor(scope: Construct, id: string, props: gameserverProps) {
     super(scope, id, {
-      ...Gameserver.GVK,
+      ...gameserver.GVK,
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
@@ -84,41 +97,55 @@ export class Gameserver extends ApiObject implements GameserverSpec {
     const resolved = super.toJson();
 
     return {
-      ...Gameserver.GVK,
-      ...toJson_GameserverProps(resolved),
+      ...gameserver.GVK,
+      ...toJson_gameserverProps(resolved),
     };
   }
 }
 
-export interface GameserverProps {
+export interface gameserverProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec?: GameserverSpec;
+  readonly spec?: gameserverSpec;
 }
 
-export function toJson_GameserverProps(obj: GameserverProps | undefined): Record<string, unknown> | undefined {
-  if (obj === undefined) { return undefined; }
+export function toJson_gameserverProps(
+  obj: gameserverProps | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
   const result = {
-    'metadata': obj.metadata,
-    'spec': toJson_GameserverSpec(obj.spec),
+    metadata: obj.metadata,
+    spec: toJson_gameserverSpec(obj.spec),
   };
   // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
-export function toJson_GameserverSpec(obj: GameserverSpec | undefined): Record<string, unknown> | undefined {
-  if (obj === undefined) { return undefined; }
+export function toJson_gameserverSpec(
+  obj: gameserverSpec | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
   const result = {
-    'game': obj.Game,
-    'gameserverBase': obj.GameserverBase,
-    'gameserverOverlays': obj.GameserverOverlays,
-    'storageClassName': obj.StorageClassName,
-    'storageStrategy': obj.StorageStrategy,
+    Game: obj.Game,
+    GameserverBase: obj.GameserverBase,
+    GameserverOverlays: obj.GameserverOverlays,
+    StorageClassName: obj.StorageClassName,
+    StorageStrategy: obj.StorageStrategy,
   };
   // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
-export interface GameserverSpec {
+export interface gameserverSpec {
   /**
    * Game defines the game for this Gameserver instance
    */
@@ -143,14 +170,9 @@ export interface GameserverSpec {
    * StorageStrategy selects which storage mechanism will be used for this GS
    */
   StorageStrategy: StorageStrategies;
-
-  /**
-   * Status reflects the status of this GS
-   */
-  Status?: GameserverStatus;
 }
 
-export interface GameserverStatus {
+export interface gameserverStatus {
   /**
    * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
    */
@@ -170,6 +192,25 @@ export interface GameserverStatus {
    * observedGeneration
    */
   observedGeneration?: number;
+}
+
+export function toJson_gameserverStatus(
+  obj: gameserverStatus | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
+  const result = {
+    lastTransitionTime: obj.lastTransitionTime,
+    message: obj.message,
+    reason: obj.reason,
+    observedGeneration: obj.observedGeneration,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
 export const details = {

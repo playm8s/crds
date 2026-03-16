@@ -1,10 +1,9 @@
 'use strict';
 
-// Kind: GameserverOverlay
+// Kind: gameserveroverlay
 // Group: pm8s
 // Version: v1
 // Domain: io
-
 
 import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
@@ -19,54 +18,67 @@ import {
   StatusReasons,
 } from './enums/index.mjs';
 
-export interface GameserverOverlayResource extends KubernetesObject {
-  spec: GameserverOverlaySpec;
-  status: GameserverOverlayStatus;
-  metadata: V1ObjectMeta | undefined;
+export interface gameserveroverlayResource extends KubernetesObject {
+  spec: gameserveroverlaySpec;
+  status: gameserveroverlayStatus;
+  metadata?: V1ObjectMeta | undefined;
 }
-
 
 export class ApiResource implements cdk8splus.IApiResource {
   apiGroup: string = 'pm8s.io';
-  resourceType: string = 'gameserveroverlay';
+  resourceType: string = 'gameserveroverlays';
+
+  /**
+   * Return the IApiResource this object represents.
+   */
+  public asApiResource(): cdk8splus.IApiResource | undefined {
+    return this;
+  }
+
+  /**
+   * Return the non resource url this object represents.
+   */
+  public asNonApiResource(): string | undefined {
+    return undefined;
+  }
 }
 
-export class GameserverOverlay extends ApiObject implements GameserverOverlaySpec {
+export class gameserveroverlay extends ApiObject implements gameserveroverlaySpec {
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
 
   /**
-   * Returns the apiVersion and kind for "Gameserver"
+   * Returns the apiVersion and kind for "gameserveroverlay"
    */
   public static readonly GVK: GroupVersionKind = {
     apiVersion: 'pm8s.io/v1',
-    kind: 'Gameserver',
-  }
+    kind: 'gameserveroverlays',
+  };
 
   /**
-   * Renders a Kubernetes manifest for "Gameserver".
+   * Renders a Kubernetes manifest for "gameserveroverlay".
    *
    * This can be used to inline resource manifests inside other objects (e.g. as templates).
    *
    * @param props initialization props
    */
-  public static manifest(props: GameserverOverlayProps): unknown {
+  public static manifest(props: gameserveroverlayProps): unknown {
     return {
-      ...GameserverOverlay.GVK,
-      ...toJson_GameserverOverlayProps(props),
+      ...gameserveroverlay.GVK,
+      ...toJson_gameserveroverlayProps(props),
     };
   }
 
   /**
-   * Defines a "Gameserver" API object
+   * Defines a "gameserveroverlay" API object
    * @param scope the scope in which to define this object
    * @param id a scope-local name for the object
    * @param props initialization props
    */
-  public constructor(scope: Construct, id: string, props: GameserverOverlayProps) {
+  public constructor(scope: Construct, id: string, props: gameserveroverlayProps) {
     super(scope, id, {
-      ...GameserverOverlay.GVK,
+      ...gameserveroverlay.GVK,
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
@@ -81,39 +93,53 @@ export class GameserverOverlay extends ApiObject implements GameserverOverlaySpe
     const resolved = super.toJson();
 
     return {
-      ...GameserverOverlay.GVK,
-      ...toJson_GameserverOverlayProps(resolved),
+      ...gameserveroverlay.GVK,
+      ...toJson_gameserveroverlayProps(resolved),
     };
   }
 }
 
-export interface GameserverOverlayProps {
+export interface gameserveroverlayProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec?: GameserverOverlaySpec;
+  readonly spec?: gameserveroverlaySpec;
 }
 
-export function toJson_GameserverOverlayProps(obj: GameserverOverlayProps | undefined): Record<string, unknown> | undefined {
-  if (obj === undefined) { return undefined; }
+export function toJson_gameserveroverlayProps(
+  obj: gameserveroverlayProps | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
   const result = {
-    'metadata': obj.metadata,
-    'spec': toJson_GameserverOverlaySpec(obj.spec),
+    metadata: obj.metadata,
+    spec: toJson_gameserveroverlaySpec(obj.spec),
   };
   // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
-export function toJson_GameserverOverlaySpec(obj: GameserverOverlaySpec | undefined): Record<string, unknown> | undefined {
-  if (obj === undefined) { return undefined; }
+export function toJson_gameserveroverlaySpec(
+  obj: gameserveroverlaySpec | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
   const result = {
-    'game': obj.Game,
-    'storageClassName': obj.StorageClassName,
-    'storageStrategy': obj.StorageStrategy,
+    Game: obj.Game,
+    StorageClassName: obj.StorageClassName,
+    StorageStrategy: obj.StorageStrategy,
   };
   // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
-export interface GameserverOverlaySpec {
+export interface gameserveroverlaySpec {
   /**
    * Game defines the game for this GameserverOverlay instance
    */
@@ -128,14 +154,9 @@ export interface GameserverOverlaySpec {
    * StorageStrategy selects which storage mechanism will be used for this GSB
    */
   StorageStrategy: StorageStrategies;
-
-  /**
-   * Status reflects the status of this GSB
-   */
-  Status?: GameserverOverlayStatus;
 }
 
-export interface GameserverOverlayStatus {
+export interface gameserveroverlayStatus {
   /**
    * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
    */
@@ -155,6 +176,25 @@ export interface GameserverOverlayStatus {
    * observedGeneration
    */
   observedGeneration?: number;
+}
+
+export function toJson_gameserveroverlayStatus(
+  obj: gameserveroverlayStatus | undefined
+): Record<string, unknown> | undefined {
+  if (obj === undefined) {
+    return undefined;
+  }
+  const result = {
+    lastTransitionTime: obj.lastTransitionTime,
+    message: obj.message,
+    reason: obj.reason,
+    observedGeneration: obj.observedGeneration,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce(
+    (r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }),
+    {}
+  );
 }
 
 export const details = {
