@@ -48,12 +48,12 @@ jobs:
       - name: Lint, Generate crds, Compile Typescript, Git push
         shell: bash
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           COMMIT="$(git rev-parse --short --verify main)"
           export NODE_ENV=development
           cat <<EOF >> $HOME/.npmrc
-          //npm.pkg.github.com/:_authToken=${GH_PAT}
+          //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
           @playm8s:registry=https://npm.pkg.github.com/
           @thehonker:registry=https://npm.pkg.github.com/
           EOF

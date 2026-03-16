@@ -39,12 +39,10 @@ if ! git push --follow-tags; then
   if git pull --rebase; then
     if ! git push --follow-tags; then
       echo "Push failed again after rebase"
-      git tag -d "${VERSION}-build"
       exit 1
     fi
   else
     echo "Rebase failed"
-    git tag -d "${VERSION}-build"
     exit 1
   fi
 else
