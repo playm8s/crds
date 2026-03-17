@@ -16,6 +16,8 @@ import {
   Games,
   StorageStrategies,
   StatusReasons,
+  SourceRef,
+  SourceRefTypes,
 } from './enums/index.mjs';
 
 export interface gameserveroverlayResource extends KubernetesObject {
@@ -43,10 +45,15 @@ export class ApiResource implements cdk8splus.IApiResource {
   }
 }
 
-export class gameserveroverlay extends ApiObject implements gameserveroverlaySpec {
+export class gameserveroverlay
+  extends ApiObject
+  implements gameserveroverlaySpec
+{
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
+  public SourceRef: SourceRef;
+  public Target: string;
   public status?: gameserveroverlayStatus;
 
   /**
@@ -77,14 +84,25 @@ export class gameserveroverlay extends ApiObject implements gameserveroverlaySpe
    * @param id a scope-local name for the object
    * @param props initialization props
    */
-  public constructor(scope: Construct, id: string, props: gameserveroverlayProps) {
+  public constructor(
+    scope: Construct,
+    id: string,
+    props: gameserveroverlayProps
+  ) {
     super(scope, id, {
       ...gameserveroverlay.GVK,
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
     this.StorageClassName = props?.spec?.StorageClassName || '';
-    this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+    this.StorageStrategy =
+      props?.spec?.StorageStrategy || StorageStrategies.raw;
+    // Default SourceRef to a minimal url type if not provided
+    this.SourceRef = props?.spec?.SourceRef || {
+      type: SourceRefTypes.url,
+      url: { url: '' },
+    };
+    this.Target = props?.spec?.Target || '';
     this.status = props?.status;
   }
 
@@ -134,6 +152,8 @@ export function toJson_gameserveroverlaySpec(
     Game: obj.Game,
     StorageClassName: obj.StorageClassName,
     StorageStrategy: obj.StorageStrategy,
+    SourceRef: obj.SourceRef,
+    Target: obj.Target,
   };
   // filter undefined values
   return Object.entries(result).reduce(
@@ -157,6 +177,16 @@ export interface gameserveroverlaySpec {
    * StorageStrategy selects which storage mechanism will be used for this GSB
    */
   StorageStrategy: StorageStrategies;
+
+  /**
+   * SourceRef defines the source from which to fetch the overlay files
+   */
+  SourceRef: SourceRef;
+
+  /**
+   * Target defines the target path where files will be placed, relative to the gameserver root directory
+   */
+  Target: string;
 }
 
 export interface gameserveroverlayStatus {

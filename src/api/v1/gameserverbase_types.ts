@@ -16,6 +16,8 @@ import {
   Games,
   StorageStrategies,
   StatusReasons,
+  SourceRef,
+  SourceRefTypes,
 } from './enums/index.mjs';
 
 export interface gameserverbaseResource extends KubernetesObject {
@@ -47,6 +49,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
   public Game: Games;
   public StorageClassName: string;
   public StorageStrategy: StorageStrategies;
+  public SourceRef: SourceRef;
   public status?: gameserverbaseStatus;
 
   /**
@@ -84,7 +87,13 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
     });
     this.Game = props?.spec?.Game || Games.csgo;
     this.StorageClassName = props?.spec?.StorageClassName || '';
-    this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+    this.StorageStrategy =
+      props?.spec?.StorageStrategy || StorageStrategies.raw;
+    // Default SourceRef to a minimal url type if not provided
+    this.SourceRef = props?.spec?.SourceRef || {
+      type: SourceRefTypes.url,
+      url: { url: '' },
+    };
     this.status = props?.status;
   }
 
@@ -134,6 +143,7 @@ export function toJson_gameserverbaseSpec(
     Game: obj.Game,
     StorageClassName: obj.StorageClassName,
     StorageStrategy: obj.StorageStrategy,
+    SourceRef: obj.SourceRef,
   };
   // filter undefined values
   return Object.entries(result).reduce(
@@ -157,6 +167,11 @@ export interface gameserverbaseSpec {
    * StorageStrategy selects which storage mechanism will be used for this GSB
    */
   StorageStrategy: StorageStrategies;
+
+  /**
+   * SourceRef defines the source from which to fetch the base files
+   */
+  SourceRef: SourceRef;
 }
 
 export interface gameserverbaseStatus {
