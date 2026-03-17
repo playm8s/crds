@@ -7,16 +7,15 @@
 
 import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
-import { V1ObjectMeta } from '@kubernetes/client-node';
+import {
+  V1ObjectMeta,
+  V1PersistentVolumeClaimSpec,
+} from '@kubernetes/client-node';
 
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
 
-import {
-  Games,
-  StorageStrategies,
-  StatusReasons,
-} from './enums/index.mjs';
+import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
 
 export interface gameserverResource extends KubernetesObject {
   spec: gameserverSpec;
@@ -45,7 +44,7 @@ export class ApiResource implements cdk8splus.IApiResource {
 
 export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
-  public StorageClassName: string;
+  public persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public GameserverBase: string;
   public GameserverOverlays: string[];
@@ -85,8 +84,9 @@ export class gameserver extends ApiObject implements gameserverSpec {
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
-    this.StorageClassName = props?.spec?.StorageClassName || '';
-    this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+    this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+    this.StorageStrategy =
+      props?.spec?.StorageStrategy || StorageStrategies.raw;
     this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
     this.GameserverOverlays = props?.spec?.GameserverOverlays || [];
     this.status = props?.status;
@@ -138,7 +138,7 @@ export function toJson_gameserverSpec(
     Game: obj.Game,
     GameserverBase: obj.GameserverBase,
     GameserverOverlays: obj.GameserverOverlays,
-    StorageClassName: obj.StorageClassName,
+    persistentVolumeClaim: obj.persistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
   };
   // filter undefined values
@@ -165,9 +165,9 @@ export interface gameserverSpec {
   GameserverOverlays: string[];
 
   /**
-   * StorageClassName defines the storageclass that will be used to store the files for this Gameserver
+   * PersistentVolumeClaim defines the PVC configuration for the module
    */
-  StorageClassName: string;
+  persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
 
   /**
    * StorageStrategy selects which storage mechanism will be used for this GS

@@ -7,7 +7,10 @@
 
 import * as cdk8splus from 'cdk8s-plus-33';
 import KubernetesObject from '@thehonker/k8s-operator';
-import { V1ObjectMeta } from '@kubernetes/client-node';
+import {
+  V1ObjectMeta,
+  V1PersistentVolumeClaimSpec,
+} from '@kubernetes/client-node';
 
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
@@ -47,7 +50,7 @@ export class ApiResource implements cdk8splus.IApiResource {
 
 export class gameserverbase extends ApiObject implements gameserverbaseSpec {
   public Game: Games;
-  public StorageClassName: string;
+  public persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public SourceRef: SourceRef;
   public status?: gameserverbaseStatus;
@@ -86,7 +89,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
-    this.StorageClassName = props?.spec?.StorageClassName || '';
+    this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
     // Default SourceRef to a minimal url type if not provided
@@ -141,7 +144,7 @@ export function toJson_gameserverbaseSpec(
   }
   const result = {
     Game: obj.Game,
-    StorageClassName: obj.StorageClassName,
+    persistentVolumeClaim: obj.persistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
     SourceRef: obj.SourceRef,
   };
@@ -159,9 +162,9 @@ export interface gameserverbaseSpec {
   Game: Games;
 
   /**
-   * StorageClassName defines the storageclass that will be used to store the files for this GameserverBase
+   * PersistentVolumeClaim defines the PVC configuration for the module
    */
-  StorageClassName: string;
+  persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
 
   /**
    * StorageStrategy selects which storage mechanism will be used for this GSB
