@@ -1,6 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { Games, StorageStrategies, } from './enums/index.mjs';
+import { Games, StorageStrategies } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameservers';
@@ -19,7 +19,7 @@ export class ApiResource {
 }
 export class gameserver extends ApiObject {
     Game;
-    StorageClassName;
+    persistentVolumeClaim;
     StorageStrategy;
     GameserverBase;
     GameserverOverlays;
@@ -56,8 +56,9 @@ export class gameserver extends ApiObject {
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
-        this.StorageClassName = props?.spec?.StorageClassName || '';
-        this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+        this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+        this.StorageStrategy =
+            props?.spec?.StorageStrategy || StorageStrategies.raw;
         this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
         this.GameserverOverlays = props?.spec?.GameserverOverlays || [];
         this.status = props?.status;
@@ -92,7 +93,7 @@ export function toJson_gameserverSpec(obj) {
         Game: obj.Game,
         GameserverBase: obj.GameserverBase,
         GameserverOverlays: obj.GameserverOverlays,
-        StorageClassName: obj.StorageClassName,
+        persistentVolumeClaim: obj.persistentVolumeClaim,
         StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values

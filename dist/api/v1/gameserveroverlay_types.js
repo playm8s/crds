@@ -19,7 +19,7 @@ export class ApiResource {
 }
 export class gameserveroverlay extends ApiObject {
     Game;
-    StorageClassName;
+    persistentVolumeClaim;
     StorageStrategy;
     SourceRef;
     Target;
@@ -56,7 +56,7 @@ export class gameserveroverlay extends ApiObject {
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
-        this.StorageClassName = props?.spec?.StorageClassName || '';
+        this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;
         // Default SourceRef to a minimal url type if not provided
@@ -95,7 +95,7 @@ export function toJson_gameserveroverlaySpec(obj) {
     }
     const result = {
         Game: obj.Game,
-        StorageClassName: obj.StorageClassName,
+        persistentVolumeClaim: obj.persistentVolumeClaim,
         StorageStrategy: obj.StorageStrategy,
         SourceRef: obj.SourceRef,
         Target: obj.Target,
