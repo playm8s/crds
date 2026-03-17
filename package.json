@@ -1,6 +1,6 @@
 {
   "name": "@playm8s/crds",
-  "version": "0.4.87",
+  "version": "0.6.0",
   "description": "crds for playm8s",
   "keywords": [],
   "homepage": "https://github.com/playm8s/crds#readme",
@@ -23,8 +23,7 @@
   "scripts": {
     "lint": "npx eslint src/",
     "build": "npx tsc && cd src && npx pepr crd generate --output ../crds",
-    "apply-crds": "find ./crds -type f -name '*.yaml' -exec kubectl apply -f {} \\;",
-    "update-libraries": "npm install --save @thehonker/k8s-operator@latest"
+    "update-libraries": "npm install --save @thehonker/k8s-operator@latest --legacy-peer-deps"
   },
   "publishConfig": {
     "@playm8s:registry": "https://npm.pkg.github.com/"
