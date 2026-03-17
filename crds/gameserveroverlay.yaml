@@ -35,10 +35,82 @@ spec:
                   type: string
                   description: StorageStrategy selects which storage mechanism will be used for
                     this GSB
+                sourceRef:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: Type of source (url, url-from-url, git, container, steamcmd)
+                    url:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: URL to fetch the tar.gz file from
+                      required:
+                        - url
+                      description: URL source configuration
+                    urlFromUrl:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: URL that returns another URL to fetch the tar.gz file from
+                      required:
+                        - url
+                      description: URL-from-URL source configuration
+                    git:
+                      type: object
+                      properties:
+                        repository:
+                          type: string
+                          description: Git repository URL
+                        ref:
+                          type: string
+                          description: Git reference (branch, tag, or commit hash)
+                        path:
+                          type: string
+                          description: Path within the repository to use as the source
+                      required:
+                        - repository
+                      description: Git source configuration
+                    container:
+                      type: object
+                      properties:
+                        image:
+                          type: string
+                          description: Container image name
+                        path:
+                          type: string
+                          description: Path within the container to use as the source
+                      required:
+                        - image
+                      description: Container source configuration
+                    steamcmd:
+                      type: object
+                      properties:
+                        appid:
+                          type: string
+                          description: Steam application ID
+                        anonymousDownload:
+                          type: boolean
+                          description: Whether to download anonymously (default true)
+                      required:
+                        - appid
+                      description: SteamCMD source configuration
+                  required:
+                    - type
+                  description: SourceRef defines the source from which to fetch the overlay files
+                target:
+                  type: string
+                  description: Target defines the target path where files will be placed, relative
+                    to the gameserver root directory
               required:
                 - game
                 - storageClassName
                 - storageStrategy
+                - sourceRef
+                - target
             status:
               type: object
               description: gameserveroverlayStatus defines the observed state of

@@ -3,7 +3,7 @@ import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
+import { Games, StorageStrategies, StatusReasons, SourceRef } from './enums/index.mjs';
 export interface gameserverbaseResource extends KubernetesObject {
     spec: gameserverbaseSpec;
     status: gameserverbaseStatus;
@@ -25,6 +25,7 @@ export declare class gameserverbase extends ApiObject implements gameserverbaseS
     Game: Games;
     StorageClassName: string;
     StorageStrategy: StorageStrategies;
+    SourceRef: SourceRef;
     status?: gameserverbaseStatus;
     /**
      * Returns the apiVersion and kind for "gameserverbase"
@@ -70,6 +71,10 @@ export interface gameserverbaseSpec {
      * StorageStrategy selects which storage mechanism will be used for this GSB
      */
     StorageStrategy: StorageStrategies;
+    /**
+     * SourceRef defines the source from which to fetch the base files
+     */
+    SourceRef: SourceRef;
 }
 export interface gameserverbaseStatus {
     /**

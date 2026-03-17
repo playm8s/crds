@@ -17,3 +17,11 @@ export var StatusReasons;
     StatusReasons["modified"] = "modified";
     StatusReasons["unknown"] = "unknown";
 })(StatusReasons || (StatusReasons = {}));
+export var SourceRefTypes;
+(function (SourceRefTypes) {
+    SourceRefTypes["url"] = "url";
+    SourceRefTypes["urlFromUrl"] = "url-from-url";
+    SourceRefTypes["git"] = "git";
+    SourceRefTypes["container"] = "container";
+    SourceRefTypes["steamcmd"] = "steamcmd";
+})(SourceRefTypes || (SourceRefTypes = {}));

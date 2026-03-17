@@ -3,7 +3,7 @@ import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
+import { Games, StorageStrategies, StatusReasons, SourceRef } from './enums/index.mjs';
 export interface gameserveroverlayResource extends KubernetesObject {
     spec: gameserveroverlaySpec;
     status: gameserveroverlayStatus;
@@ -25,6 +25,8 @@ export declare class gameserveroverlay extends ApiObject implements gameserverov
     Game: Games;
     StorageClassName: string;
     StorageStrategy: StorageStrategies;
+    SourceRef: SourceRef;
+    Target: string;
     status?: gameserveroverlayStatus;
     /**
      * Returns the apiVersion and kind for "gameserveroverlay"
@@ -70,6 +72,14 @@ export interface gameserveroverlaySpec {
      * StorageStrategy selects which storage mechanism will be used for this GSB
      */
     StorageStrategy: StorageStrategies;
+    /**
+     * SourceRef defines the source from which to fetch the overlay files
+     */
+    SourceRef: SourceRef;
+    /**
+     * Target defines the target path where files will be placed, relative to the gameserver root directory
+     */
+    Target: string;
 }
 export interface gameserveroverlayStatus {
     /**

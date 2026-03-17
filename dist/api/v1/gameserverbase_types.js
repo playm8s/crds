@@ -1,6 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { Games, StorageStrategies, } from './enums/index.mjs';
+import { Games, StorageStrategies, SourceRefTypes, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameserverbases';
@@ -21,6 +21,7 @@ export class gameserverbase extends ApiObject {
     Game;
     StorageClassName;
     StorageStrategy;
+    SourceRef;
     status;
     /**
      * Returns the apiVersion and kind for "gameserverbase"
@@ -55,7 +56,13 @@ export class gameserverbase extends ApiObject {
         });
         this.Game = props?.spec?.Game || Games.csgo;
         this.StorageClassName = props?.spec?.StorageClassName || '';
-        this.StorageStrategy = props?.spec?.StorageStrategy || StorageStrategies.raw;
+        this.StorageStrategy =
+            props?.spec?.StorageStrategy || StorageStrategies.raw;
+        // Default SourceRef to a minimal url type if not provided
+        this.SourceRef = props?.spec?.SourceRef || {
+            type: SourceRefTypes.url,
+            url: { url: '' },
+        };
         this.status = props?.status;
     }
     /**
@@ -88,6 +95,7 @@ export function toJson_gameserverbaseSpec(obj) {
         Game: obj.Game,
         StorageClassName: obj.StorageClassName,
         StorageStrategy: obj.StorageStrategy,
+        SourceRef: obj.SourceRef,
     };
     // filter undefined values
     return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
