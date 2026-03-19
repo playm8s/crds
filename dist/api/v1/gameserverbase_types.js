@@ -19,7 +19,7 @@ export class ApiResource {
 }
 export class gameserverbase extends ApiObject {
     Game;
-    persistentVolumeClaim;
+    PersistentVolumeClaim;
     StorageStrategy;
     SourceRef;
     status;
@@ -55,7 +55,7 @@ export class gameserverbase extends ApiObject {
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
-        this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+        this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;
         // Default SourceRef to a minimal url type if not provided
@@ -93,7 +93,7 @@ export function toJson_gameserverbaseSpec(obj) {
     }
     const result = {
         Game: obj.Game,
-        persistentVolumeClaim: obj.persistentVolumeClaim,
+        PersistentVolumeClaim: obj.PersistentVolumeClaim,
         StorageStrategy: obj.StorageStrategy,
         SourceRef: obj.SourceRef,
     };

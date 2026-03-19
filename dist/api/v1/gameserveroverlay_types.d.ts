@@ -23,7 +23,7 @@ export declare class ApiResource implements cdk8splus.IApiResource {
 }
 export declare class gameserveroverlay extends ApiObject implements gameserveroverlaySpec {
     Game: Games;
-    persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+    PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
     StorageStrategy: StorageStrategies;
     SourceRef: SourceRef;
     Target: string;
@@ -67,7 +67,7 @@ export interface gameserveroverlaySpec {
     /**
      * PersistentVolumeClaim defines the PVC configuration for the module
      */
-    persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+    PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
     /**
      * StorageStrategy selects which storage mechanism will be used for this GSB
      */

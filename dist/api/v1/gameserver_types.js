@@ -19,7 +19,7 @@ export class ApiResource {
 }
 export class gameserver extends ApiObject {
     Game;
-    persistentVolumeClaim;
+    PersistentVolumeClaim;
     StorageStrategy;
     GameserverBase;
     GameserverOverlays;
@@ -56,7 +56,7 @@ export class gameserver extends ApiObject {
             ...props,
         });
         this.Game = props?.spec?.Game || Games.csgo;
-        this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+        this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;
         this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
@@ -93,7 +93,7 @@ export function toJson_gameserverSpec(obj) {
         Game: obj.Game,
         GameserverBase: obj.GameserverBase,
         GameserverOverlays: obj.GameserverOverlays,
-        persistentVolumeClaim: obj.persistentVolumeClaim,
+        PersistentVolumeClaim: obj.PersistentVolumeClaim,
         StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values
