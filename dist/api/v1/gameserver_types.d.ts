@@ -25,8 +25,8 @@ export declare class gameserver extends ApiObject implements gameserverSpec {
     Game: Games;
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
     StorageStrategy: StorageStrategies;
-    GameserverBase: string;
-    GameserverOverlays: string[];
+    GameserverBase?: string;
+    GameserverOverlays?: string[];
     status?: gameserverStatus;
     /**
      * Returns the apiVersion and kind for "gameserver"
@@ -54,7 +54,7 @@ export declare class gameserver extends ApiObject implements gameserverSpec {
 }
 export interface gameserverProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec?: gameserverSpec;
+    readonly spec: gameserverSpec;
     readonly status?: gameserverStatus;
 }
 export declare function toJson_gameserverProps(obj: gameserverProps | undefined): Record<string, unknown> | undefined;
@@ -67,11 +67,11 @@ export interface gameserverSpec {
     /**
      * GameserverBase defines the name of the GameserverBase this Gameserver is... based on
      */
-    GameserverBase: string;
+    GameserverBase?: string;
     /**
      * GameserverOverlays defines a list of GameserverOverlay(s) to apply to the GameserverBase in order to create the Gameserver
      */
-    GameserverOverlays: string[];
+    GameserverOverlays?: string[];
     /**
      * PersistentVolumeClaim defines the PVC configuration for the module
      */

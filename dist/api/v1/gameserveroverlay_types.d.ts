@@ -54,7 +54,7 @@ export declare class gameserveroverlay extends ApiObject implements gameserverov
 }
 export interface gameserveroverlayProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec?: gameserveroverlaySpec;
+    readonly spec: gameserveroverlaySpec;
     readonly status?: gameserveroverlayStatus;
 }
 export declare function toJson_gameserveroverlayProps(obj: gameserveroverlayProps | undefined): Record<string, unknown> | undefined;

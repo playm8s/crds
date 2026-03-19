@@ -1,6 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { Games, StorageStrategies, SourceRefTypes, } from './enums/index.mjs';
+import { StorageStrategies, SourceRefTypes, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameserveroverlays';
@@ -55,7 +55,7 @@ export class gameserveroverlay extends ApiObject {
             ...gameserveroverlay.GVK,
             ...props,
         });
-        this.Game = props?.spec?.Game || Games.csgo;
+        this.Game = props.spec.Game;
         this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;

@@ -193,8 +193,6 @@ spec:
                     this GS
               required:
                 - game
-                - gameserverBase
-                - gameserverOverlays
                 - storageStrategy
             status:
               type: object

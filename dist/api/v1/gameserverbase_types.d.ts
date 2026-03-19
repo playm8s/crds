@@ -53,7 +53,7 @@ export declare class gameserverbase extends ApiObject implements gameserverbaseS
 }
 export interface gameserverbaseProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec?: gameserverbaseSpec;
+    readonly spec: gameserverbaseSpec;
     readonly status?: gameserverbaseStatus;
 }
 export declare function toJson_gameserverbaseProps(obj: gameserverbaseProps | undefined): Record<string, unknown> | undefined;

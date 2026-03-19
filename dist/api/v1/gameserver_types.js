@@ -1,6 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { Games, StorageStrategies } from './enums/index.mjs';
+import { StorageStrategies } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameservers';
@@ -55,12 +55,12 @@ export class gameserver extends ApiObject {
             ...gameserver.GVK,
             ...props,
         });
-        this.Game = props?.spec?.Game || Games.csgo;
+        this.Game = props.spec.Game;
         this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;
-        this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
-        this.GameserverOverlays = props?.spec?.GameserverOverlays || [];
+        this.GameserverBase = props?.spec?.GameserverBase;
+        this.GameserverOverlays = props?.spec?.GameserverOverlays;
         this.status = props?.status;
     }
     /**
