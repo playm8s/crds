@@ -46,8 +46,8 @@ export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
   public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
-  public GameserverBase: string;
-  public GameserverOverlays: string[];
+  public GameserverBase?: string;
+  public GameserverOverlays?: string[];
   public status?: gameserverStatus;
 
   /**
@@ -83,12 +83,12 @@ export class gameserver extends ApiObject implements gameserverSpec {
       ...gameserver.GVK,
       ...props,
     });
-    this.Game = props?.spec?.Game || Games.csgo;
+    this.Game = props.spec.Game;
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
-    this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
-    this.GameserverOverlays = props?.spec?.GameserverOverlays || [];
+    this.GameserverBase = props?.spec?.GameserverBase;
+    this.GameserverOverlays = props?.spec?.GameserverOverlays;
     this.status = props?.status;
   }
 
@@ -107,7 +107,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
 
 export interface gameserverProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec?: gameserverSpec;
+  readonly spec: gameserverSpec;
   readonly status?: gameserverStatus;
 }
 
@@ -157,12 +157,12 @@ export interface gameserverSpec {
   /**
    * GameserverBase defines the name of the GameserverBase this Gameserver is... based on
    */
-  GameserverBase: string;
+  GameserverBase?: string;
 
   /**
    * GameserverOverlays defines a list of GameserverOverlay(s) to apply to the GameserverBase in order to create the Gameserver
    */
-  GameserverOverlays: string[];
+  GameserverOverlays?: string[];
 
   /**
    * PersistentVolumeClaim defines the PVC configuration for the module

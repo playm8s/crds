@@ -88,7 +88,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
       ...gameserverbase.GVK,
       ...props,
     });
-    this.Game = props?.spec?.Game || Games.csgo;
+    this.Game = props.spec.Game;
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
@@ -115,7 +115,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
 
 export interface gameserverbaseProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec?: gameserverbaseSpec;
+  readonly spec: gameserverbaseSpec;
   readonly status?: gameserverbaseStatus;
 }
 

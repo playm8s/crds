@@ -96,7 +96,7 @@ export class gameserveroverlay
       ...gameserveroverlay.GVK,
       ...props,
     });
-    this.Game = props?.spec?.Game || Games.csgo;
+    this.Game = props.spec.Game;
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
@@ -124,7 +124,7 @@ export class gameserveroverlay
 
 export interface gameserveroverlayProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec?: gameserveroverlaySpec;
+  readonly spec: gameserveroverlaySpec;
   readonly status?: gameserveroverlayStatus;
 }
 
