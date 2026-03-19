@@ -50,7 +50,7 @@ export class ApiResource implements cdk8splus.IApiResource {
 
 export class gameserverbase extends ApiObject implements gameserverbaseSpec {
   public Game: Games;
-  public persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public SourceRef: SourceRef;
   public status?: gameserverbaseStatus;
@@ -89,7 +89,7 @@ export class gameserverbase extends ApiObject implements gameserverbaseSpec {
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
-    this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+    this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
     // Default SourceRef to a minimal url type if not provided
@@ -144,7 +144,7 @@ export function toJson_gameserverbaseSpec(
   }
   const result = {
     Game: obj.Game,
-    persistentVolumeClaim: obj.persistentVolumeClaim,
+    PersistentVolumeClaim: obj.PersistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
     SourceRef: obj.SourceRef,
   };
@@ -164,7 +164,7 @@ export interface gameserverbaseSpec {
   /**
    * PersistentVolumeClaim defines the PVC configuration for the module
    */
-  persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
 
   /**
    * StorageStrategy selects which storage mechanism will be used for this GSB

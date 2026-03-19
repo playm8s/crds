@@ -53,7 +53,7 @@ export class gameserveroverlay
   implements gameserveroverlaySpec
 {
   public Game: Games;
-  public persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public SourceRef: SourceRef;
   public Target: string;
@@ -97,7 +97,7 @@ export class gameserveroverlay
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
-    this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+    this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
     // Default SourceRef to a minimal url type if not provided
@@ -153,7 +153,7 @@ export function toJson_gameserveroverlaySpec(
   }
   const result = {
     Game: obj.Game,
-    persistentVolumeClaim: obj.persistentVolumeClaim,
+    PersistentVolumeClaim: obj.PersistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
     SourceRef: obj.SourceRef,
     Target: obj.Target,
@@ -174,7 +174,7 @@ export interface gameserveroverlaySpec {
   /**
    * PersistentVolumeClaim defines the PVC configuration for the module
    */
-  persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
 
   /**
    * StorageStrategy selects which storage mechanism will be used for this GSB

@@ -44,7 +44,7 @@ export class ApiResource implements cdk8splus.IApiResource {
 
 export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
-  public persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public GameserverBase: string;
   public GameserverOverlays: string[];
@@ -84,7 +84,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
       ...props,
     });
     this.Game = props?.spec?.Game || Games.csgo;
-    this.persistentVolumeClaim = props?.spec?.persistentVolumeClaim;
+    this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
     this.GameserverBase = props?.spec?.GameserverBase || 'invalid';
@@ -138,7 +138,7 @@ export function toJson_gameserverSpec(
     Game: obj.Game,
     GameserverBase: obj.GameserverBase,
     GameserverOverlays: obj.GameserverOverlays,
-    persistentVolumeClaim: obj.persistentVolumeClaim,
+    PersistentVolumeClaim: obj.PersistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
   };
   // filter undefined values
@@ -167,7 +167,7 @@ export interface gameserverSpec {
   /**
    * PersistentVolumeClaim defines the PVC configuration for the module
    */
-  persistentVolumeClaim?: V1PersistentVolumeClaimSpec;
+  PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
 
   /**
    * StorageStrategy selects which storage mechanism will be used for this GS
