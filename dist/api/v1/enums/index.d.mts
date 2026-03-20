@@ -11,7 +11,8 @@ export declare enum StatusReasons {
     updated = "updated",
     deleted = "deleted",
     modified = "modified",
-    unknown = "unknown"
+    unknown = "unknown",
+    ready = "ready"
 }
 export declare enum SourceRefTypes {
     url = "url",

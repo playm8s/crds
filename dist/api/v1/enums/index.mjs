@@ -16,6 +16,7 @@ export var StatusReasons;
     StatusReasons["deleted"] = "deleted";
     StatusReasons["modified"] = "modified";
     StatusReasons["unknown"] = "unknown";
+    StatusReasons["ready"] = "ready";
 })(StatusReasons || (StatusReasons = {}));
 export var SourceRefTypes;
 (function (SourceRefTypes) {
