@@ -16,6 +16,7 @@ export enum StatusReasons {
   deleted = 'deleted',
   modified = 'modified',
   unknown = 'unknown',
+  ready = 'ready',
 }
 
 export enum SourceRefTypes {
