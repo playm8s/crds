@@ -3,10 +3,10 @@ import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta, V1PersistentVolumeClaimSpec } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
-export interface gameserverResource extends KubernetesObject {
-    spec: gameserverSpec;
-    status: gameserverStatus;
+import { Games, StorageStrategies, StatusReasons, SourceRef } from './enums/index.mjs';
+export interface gameserverlayerResource extends KubernetesObject {
+    spec: gameserverlayerSpec;
+    status: gameserverlayerStatus;
     metadata?: V1ObjectMeta | undefined;
 }
 export declare class ApiResource implements cdk8splus.IApiResource {
@@ -21,62 +21,67 @@ export declare class ApiResource implements cdk8splus.IApiResource {
      */
     asNonApiResource(): string | undefined;
 }
-export declare class gameserver extends ApiObject implements gameserverSpec {
+export declare class gameserverlayer extends ApiObject implements gameserverlayerSpec {
     Game: Games;
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
     StorageStrategy: StorageStrategies;
-    GameserverLayers?: string[];
-    status?: gameserverStatus;
+    SourceRef: SourceRef;
+    Target: string;
+    status?: gameserverlayerStatus;
     /**
-     * Returns the apiVersion and kind for "gameserver"
+     * Returns the apiVersion and kind for "gameserverlayer"
      */
     static readonly GVK: GroupVersionKind;
     /**
-     * Renders a Kubernetes manifest for "gameserver".
+     * Renders a Kubernetes manifest for "gameserverlayer".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
      * @param props initialization props
      */
-    static manifest(props: gameserverProps): unknown;
+    static manifest(props: gameserverlayerProps): unknown;
     /**
-     * Defines a "gameserver" API object
+     * Defines a "gameserverlayer" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
-    constructor(scope: Construct, id: string, props: gameserverProps);
+    constructor(scope: Construct, id: string, props: gameserverlayerProps);
     /**
      * Renders the object to Kubernetes JSON.
      */
     toJson(): unknown;
 }
-export interface gameserverProps {
+export interface gameserverlayerProps {
     readonly metadata?: ApiObjectMetadata;
-    readonly spec: gameserverSpec;
-    readonly status?: gameserverStatus;
+    readonly spec: gameserverlayerSpec;
+    readonly status?: gameserverlayerStatus;
 }
-export declare function toJson_gameserverProps(obj: gameserverProps | undefined): Record<string, unknown> | undefined;
-export declare function toJson_gameserverSpec(obj: gameserverSpec | undefined): Record<string, unknown> | undefined;
-export interface gameserverSpec {
+export declare function toJson_gameserverlayerProps(obj: gameserverlayerProps | undefined): Record<string, unknown> | undefined;
+export declare function toJson_gameserverlayerSpec(obj: gameserverlayerSpec | undefined): Record<string, unknown> | undefined;
+export interface gameserverlayerSpec {
     /**
-     * Game defines the game for this Gameserver instance
+     * Game defines the game for this GameserverOverlay instance
      */
     Game: Games;
-    /**
-     * GameserverLayers defines a list of GameserverLayers(s) to apply in order to create the Gameserver
-     */
-    GameserverLayers?: string[];
     /**
      * PersistentVolumeClaim defines the PVC configuration for the module
      */
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
     /**
-     * StorageStrategy selects which storage mechanism will be used for this GS
+     * StorageStrategy selects which storage mechanism will be used for this GSB
      */
     StorageStrategy: StorageStrategies;
+    /**
+     * SourceRef defines the source from which to fetch the overlay files
+     */
+    SourceRef: SourceRef;
+    /**
+     * Target defines the target path where files will be placed, relative to the gameserver root directory
+     */
+    Target: string;
 }
-export interface gameserverStatus {
+export interface gameserverlayerStatus {
     /**
      * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
      */
@@ -94,7 +99,7 @@ export interface gameserverStatus {
      */
     observedGeneration?: number;
 }
-export declare function toJson_gameserverStatus(obj: gameserverStatus | undefined): Record<string, unknown> | undefined;
+export declare function toJson_gameserverlayerStatus(obj: gameserverlayerStatus | undefined): Record<string, unknown> | undefined;
 export declare const details: {
     name: string;
     plural: string;

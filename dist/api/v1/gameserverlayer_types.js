@@ -1,9 +1,9 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { StorageStrategies } from './enums/index.mjs';
+import { StorageStrategies, SourceRefTypes, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
-    resourceType = 'gameservers';
+    resourceType = 'gameserverlayers';
     /**
      * Return the IApiResource this object represents.
      */
@@ -17,21 +17,22 @@ export class ApiResource {
         return undefined;
     }
 }
-export class gameserver extends ApiObject {
+export class gameserverlayer extends ApiObject {
     Game;
     PersistentVolumeClaim;
     StorageStrategy;
-    GameserverLayers;
+    SourceRef;
+    Target;
     status;
     /**
-     * Returns the apiVersion and kind for "gameserver"
+     * Returns the apiVersion and kind for "gameserverlayer"
      */
     static GVK = {
         apiVersion: 'pm8s.io/v1',
-        kind: 'gameservers',
+        kind: 'gameserverlayers',
     };
     /**
-     * Renders a Kubernetes manifest for "gameserver".
+     * Renders a Kubernetes manifest for "gameserverlayer".
      *
      * This can be used to inline resource manifests inside other objects (e.g. as templates).
      *
@@ -39,26 +40,31 @@ export class gameserver extends ApiObject {
      */
     static manifest(props) {
         return {
-            ...gameserver.GVK,
-            ...toJson_gameserverProps(props),
+            ...gameserverlayer.GVK,
+            ...toJson_gameserverlayerProps(props),
         };
     }
     /**
-     * Defines a "gameserver" API object
+     * Defines a "gameserverlayer" API object
      * @param scope the scope in which to define this object
      * @param id a scope-local name for the object
      * @param props initialization props
      */
     constructor(scope, id, props) {
         super(scope, id, {
-            ...gameserver.GVK,
+            ...gameserverlayer.GVK,
             ...props,
         });
         this.Game = props.spec.Game;
         this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
         this.StorageStrategy =
             props?.spec?.StorageStrategy || StorageStrategies.raw;
-        this.GameserverLayers = props?.spec?.GameserverLayers;
+        // Default SourceRef to a minimal url type if not provided
+        this.SourceRef = props?.spec?.SourceRef || {
+            type: SourceRefTypes.url,
+            url: { url: '' },
+        };
+        this.Target = props?.spec?.Target || '';
         this.status = props?.status;
     }
     /**
@@ -67,36 +73,37 @@ export class gameserver extends ApiObject {
     toJson() {
         const resolved = super.toJson();
         return {
-            ...gameserver.GVK,
-            ...toJson_gameserverProps(resolved),
+            ...gameserverlayer.GVK,
+            ...toJson_gameserverlayerProps(resolved),
         };
     }
 }
-export function toJson_gameserverProps(obj) {
+export function toJson_gameserverlayerProps(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
         metadata: obj.metadata,
-        spec: toJson_gameserverSpec(obj.spec),
+        spec: toJson_gameserverlayerSpec(obj.spec),
     };
     // filter undefined values
     return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
-export function toJson_gameserverSpec(obj) {
+export function toJson_gameserverlayerSpec(obj) {
     if (obj === undefined) {
         return undefined;
     }
     const result = {
         Game: obj.Game,
-        GameserverLayers: obj.GameserverLayers,
         PersistentVolumeClaim: obj.PersistentVolumeClaim,
         StorageStrategy: obj.StorageStrategy,
+        SourceRef: obj.SourceRef,
+        Target: obj.Target,
     };
     // filter undefined values
     return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
-export function toJson_gameserverStatus(obj) {
+export function toJson_gameserverlayerStatus(obj) {
     if (obj === undefined) {
         return undefined;
     }
@@ -110,10 +117,10 @@ export function toJson_gameserverStatus(obj) {
     return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});
 }
 export const details = {
-    name: 'gameserver',
-    plural: 'gameservers',
+    name: 'gameserverlayer',
+    plural: 'gameserverlayers',
     group: 'pm8s.io',
     version: 'v1',
     scope: 'Namespaced',
-    shortName: 'gameserver',
+    shortName: 'gameserverlayer',
 };
