@@ -1,6 +1,6 @@
 'use strict';
 
-// Kind: gameserveroverlay
+// Kind: gameserverlayer
 // Group: pm8s
 // Version: v1
 // Domain: io
@@ -23,15 +23,15 @@ import {
   SourceRefTypes,
 } from './enums/index.mjs';
 
-export interface gameserveroverlayResource extends KubernetesObject {
-  spec: gameserveroverlaySpec;
-  status: gameserveroverlayStatus;
+export interface gameserverlayerResource extends KubernetesObject {
+  spec: gameserverlayerSpec;
+  status: gameserverlayerStatus;
   metadata?: V1ObjectMeta | undefined;
 }
 
 export class ApiResource implements cdk8splus.IApiResource {
   apiGroup: string = 'pm8s.io';
-  resourceType: string = 'gameserveroverlays';
+  resourceType: string = 'gameserverlayers';
 
   /**
    * Return the IApiResource this object represents.
@@ -48,41 +48,38 @@ export class ApiResource implements cdk8splus.IApiResource {
   }
 }
 
-export class gameserveroverlay
-  extends ApiObject
-  implements gameserveroverlaySpec
-{
+export class gameserverlayer extends ApiObject implements gameserverlayerSpec {
   public Game: Games;
   public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
   public SourceRef: SourceRef;
   public Target: string;
-  public status?: gameserveroverlayStatus;
+  public status?: gameserverlayerStatus;
 
   /**
-   * Returns the apiVersion and kind for "gameserveroverlay"
+   * Returns the apiVersion and kind for "gameserverlayer"
    */
   public static readonly GVK: GroupVersionKind = {
     apiVersion: 'pm8s.io/v1',
-    kind: 'gameserveroverlays',
+    kind: 'gameserverlayers',
   };
 
   /**
-   * Renders a Kubernetes manifest for "gameserveroverlay".
+   * Renders a Kubernetes manifest for "gameserverlayer".
    *
    * This can be used to inline resource manifests inside other objects (e.g. as templates).
    *
    * @param props initialization props
    */
-  public static manifest(props: gameserveroverlayProps): unknown {
+  public static manifest(props: gameserverlayerProps): unknown {
     return {
-      ...gameserveroverlay.GVK,
-      ...toJson_gameserveroverlayProps(props),
+      ...gameserverlayer.GVK,
+      ...toJson_gameserverlayerProps(props),
     };
   }
 
   /**
-   * Defines a "gameserveroverlay" API object
+   * Defines a "gameserverlayer" API object
    * @param scope the scope in which to define this object
    * @param id a scope-local name for the object
    * @param props initialization props
@@ -90,10 +87,10 @@ export class gameserveroverlay
   public constructor(
     scope: Construct,
     id: string,
-    props: gameserveroverlayProps
+    props: gameserverlayerProps
   ) {
     super(scope, id, {
-      ...gameserveroverlay.GVK,
+      ...gameserverlayer.GVK,
       ...props,
     });
     this.Game = props.spec.Game;
@@ -116,27 +113,27 @@ export class gameserveroverlay
     const resolved = super.toJson();
 
     return {
-      ...gameserveroverlay.GVK,
-      ...toJson_gameserveroverlayProps(resolved),
+      ...gameserverlayer.GVK,
+      ...toJson_gameserverlayerProps(resolved),
     };
   }
 }
 
-export interface gameserveroverlayProps {
+export interface gameserverlayerProps {
   readonly metadata?: ApiObjectMetadata;
-  readonly spec: gameserveroverlaySpec;
-  readonly status?: gameserveroverlayStatus;
+  readonly spec: gameserverlayerSpec;
+  readonly status?: gameserverlayerStatus;
 }
 
-export function toJson_gameserveroverlayProps(
-  obj: gameserveroverlayProps | undefined
+export function toJson_gameserverlayerProps(
+  obj: gameserverlayerProps | undefined
 ): Record<string, unknown> | undefined {
   if (obj === undefined) {
     return undefined;
   }
   const result = {
     metadata: obj.metadata,
-    spec: toJson_gameserveroverlaySpec(obj.spec),
+    spec: toJson_gameserverlayerSpec(obj.spec),
   };
   // filter undefined values
   return Object.entries(result).reduce(
@@ -145,8 +142,8 @@ export function toJson_gameserveroverlayProps(
   );
 }
 
-export function toJson_gameserveroverlaySpec(
-  obj: gameserveroverlaySpec | undefined
+export function toJson_gameserverlayerSpec(
+  obj: gameserverlayerSpec | undefined
 ): Record<string, unknown> | undefined {
   if (obj === undefined) {
     return undefined;
@@ -165,7 +162,7 @@ export function toJson_gameserveroverlaySpec(
   );
 }
 
-export interface gameserveroverlaySpec {
+export interface gameserverlayerSpec {
   /**
    * Game defines the game for this GameserverOverlay instance
    */
@@ -192,7 +189,7 @@ export interface gameserveroverlaySpec {
   Target: string;
 }
 
-export interface gameserveroverlayStatus {
+export interface gameserverlayerStatus {
   /**
    * lastTransitionTime is the last time the condition transitioned from one status to another. This is not guaranteed to be set in happensBefore order across different conditions for a given object. It may be unset in some circumstances.
    */
@@ -214,8 +211,8 @@ export interface gameserveroverlayStatus {
   observedGeneration?: number;
 }
 
-export function toJson_gameserveroverlayStatus(
-  obj: gameserveroverlayStatus | undefined
+export function toJson_gameserverlayerStatus(
+  obj: gameserverlayerStatus | undefined
 ): Record<string, unknown> | undefined {
   if (obj === undefined) {
     return undefined;
@@ -234,10 +231,10 @@ export function toJson_gameserveroverlayStatus(
 }
 
 export const details = {
-  name: 'gameserveroverlay',
-  plural: 'gameserveroverlays',
+  name: 'gameserverlayer',
+  plural: 'gameserverlayers',
   group: 'pm8s.io',
   version: 'v1',
   scope: 'Namespaced',
-  shortName: 'gameserveroverlay',
+  shortName: 'gameserverlayer',
 };

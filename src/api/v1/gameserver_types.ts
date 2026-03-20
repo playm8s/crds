@@ -46,8 +46,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
   public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
   public StorageStrategy: StorageStrategies;
-  public GameserverBase?: string;
-  public GameserverOverlays?: string[];
+  public GameserverLayers?: string[];
   public status?: gameserverStatus;
 
   /**
@@ -87,8 +86,7 @@ export class gameserver extends ApiObject implements gameserverSpec {
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
     this.StorageStrategy =
       props?.spec?.StorageStrategy || StorageStrategies.raw;
-    this.GameserverBase = props?.spec?.GameserverBase;
-    this.GameserverOverlays = props?.spec?.GameserverOverlays;
+    this.GameserverLayers = props?.spec?.GameserverLayers;
     this.status = props?.status;
   }
 
@@ -136,8 +134,7 @@ export function toJson_gameserverSpec(
   }
   const result = {
     Game: obj.Game,
-    GameserverBase: obj.GameserverBase,
-    GameserverOverlays: obj.GameserverOverlays,
+    GameserverLayers: obj.GameserverLayers,
     PersistentVolumeClaim: obj.PersistentVolumeClaim,
     StorageStrategy: obj.StorageStrategy,
   };
@@ -155,14 +152,9 @@ export interface gameserverSpec {
   Game: Games;
 
   /**
-   * GameserverBase defines the name of the GameserverBase this Gameserver is... based on
+   * GameserverLayers defines a list of GameserverLayers(s) to apply in order to create the Gameserver
    */
-  GameserverBase?: string;
-
-  /**
-   * GameserverOverlays defines a list of GameserverOverlay(s) to apply to the GameserverBase in order to create the Gameserver
-   */
-  GameserverOverlays?: string[];
+  GameserverLayers?: string[];
 
   /**
    * PersistentVolumeClaim defines the PVC configuration for the module
