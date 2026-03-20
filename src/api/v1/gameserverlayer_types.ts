@@ -17,7 +17,6 @@ import { Construct } from 'constructs';
 
 import {
   Games,
-  StorageStrategies,
   StatusReasons,
   SourceRef,
   SourceRefTypes,
@@ -51,7 +50,6 @@ export class ApiResource implements cdk8splus.IApiResource {
 export class gameserverlayer extends ApiObject implements gameserverlayerSpec {
   public Game: Games;
   public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-  public StorageStrategy: StorageStrategies;
   public SourceRef: SourceRef;
   public Target: string;
   public status?: gameserverlayerStatus;
@@ -95,8 +93,6 @@ export class gameserverlayer extends ApiObject implements gameserverlayerSpec {
     });
     this.Game = props.spec.Game;
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
-    this.StorageStrategy =
-      props?.spec?.StorageStrategy || StorageStrategies.raw;
     // Default SourceRef to a minimal url type if not provided
     this.SourceRef = props?.spec?.SourceRef || {
       type: SourceRefTypes.url,
@@ -151,7 +147,6 @@ export function toJson_gameserverlayerSpec(
   const result = {
     Game: obj.Game,
     PersistentVolumeClaim: obj.PersistentVolumeClaim,
-    StorageStrategy: obj.StorageStrategy,
     SourceRef: obj.SourceRef,
     Target: obj.Target,
   };
@@ -172,11 +167,6 @@ export interface gameserverlayerSpec {
    * PersistentVolumeClaim defines the PVC configuration for the module
    */
   PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-
-  /**
-   * StorageStrategy selects which storage mechanism will be used for this GSB
-   */
-  StorageStrategy: StorageStrategies;
 
   /**
    * SourceRef defines the source from which to fetch the overlay files

@@ -15,7 +15,7 @@ import {
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
 
-import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
+import { Games, StatusReasons } from './enums/index.mjs';
 
 export interface gameserverResource extends KubernetesObject {
   spec: gameserverSpec;
@@ -45,7 +45,6 @@ export class ApiResource implements cdk8splus.IApiResource {
 export class gameserver extends ApiObject implements gameserverSpec {
   public Game: Games;
   public PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-  public StorageStrategy: StorageStrategies;
   public GameserverLayers?: string[];
   public status?: gameserverStatus;
 
@@ -84,8 +83,6 @@ export class gameserver extends ApiObject implements gameserverSpec {
     });
     this.Game = props.spec.Game;
     this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
-    this.StorageStrategy =
-      props?.spec?.StorageStrategy || StorageStrategies.raw;
     this.GameserverLayers = props?.spec?.GameserverLayers;
     this.status = props?.status;
   }
@@ -136,7 +133,6 @@ export function toJson_gameserverSpec(
     Game: obj.Game,
     GameserverLayers: obj.GameserverLayers,
     PersistentVolumeClaim: obj.PersistentVolumeClaim,
-    StorageStrategy: obj.StorageStrategy,
   };
   // filter undefined values
   return Object.entries(result).reduce(
@@ -160,11 +156,6 @@ export interface gameserverSpec {
    * PersistentVolumeClaim defines the PVC configuration for the module
    */
   PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-
-  /**
-   * StorageStrategy selects which storage mechanism will be used for this GS
-   */
-  StorageStrategy: StorageStrategies;
 }
 
 export interface gameserverStatus {
