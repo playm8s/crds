@@ -4,11 +4,6 @@ export var Games;
     Games["csgo"] = "csgo";
     Games["cs2"] = "cs2";
 })(Games || (Games = {}));
-export var StorageStrategies;
-(function (StorageStrategies) {
-    StorageStrategies["raw"] = "raw";
-    StorageStrategies["overlayfs"] = "overlayfs";
-})(StorageStrategies || (StorageStrategies = {}));
 export var StatusReasons;
 (function (StatusReasons) {
     StatusReasons["created"] = "created";

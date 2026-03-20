@@ -177,10 +177,6 @@ spec:
                       description: volumeName is the binding reference to the PersistentVolume backing
                         this claim.
                   description: PersistentVolumeClaim defines the PVC configuration for the module
-                storageStrategy:
-                  type: string
-                  description: StorageStrategy selects which storage mechanism will be used for
-                    this GSB
                 sourceRef:
                   type: object
                   properties:
@@ -253,7 +249,6 @@ spec:
                     to the gameserver root directory
               required:
                 - game
-                - storageStrategy
                 - sourceRef
                 - target
             status:

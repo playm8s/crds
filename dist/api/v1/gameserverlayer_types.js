@@ -1,6 +1,6 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { StorageStrategies, SourceRefTypes, } from './enums/index.mjs';
+import { SourceRefTypes, } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameserverlayers';
@@ -20,7 +20,6 @@ export class ApiResource {
 export class gameserverlayer extends ApiObject {
     Game;
     PersistentVolumeClaim;
-    StorageStrategy;
     SourceRef;
     Target;
     status;
@@ -57,8 +56,6 @@ export class gameserverlayer extends ApiObject {
         });
         this.Game = props.spec.Game;
         this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
-        this.StorageStrategy =
-            props?.spec?.StorageStrategy || StorageStrategies.raw;
         // Default SourceRef to a minimal url type if not provided
         this.SourceRef = props?.spec?.SourceRef || {
             type: SourceRefTypes.url,
@@ -96,7 +93,6 @@ export function toJson_gameserverlayerSpec(obj) {
     const result = {
         Game: obj.Game,
         PersistentVolumeClaim: obj.PersistentVolumeClaim,
-        StorageStrategy: obj.StorageStrategy,
         SourceRef: obj.SourceRef,
         Target: obj.Target,
     };

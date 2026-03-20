@@ -3,7 +3,7 @@ import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta, V1PersistentVolumeClaimSpec } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Games, StorageStrategies, StatusReasons, SourceRef } from './enums/index.mjs';
+import { Games, StatusReasons, SourceRef } from './enums/index.mjs';
 export interface gameserverlayerResource extends KubernetesObject {
     spec: gameserverlayerSpec;
     status: gameserverlayerStatus;
@@ -24,7 +24,6 @@ export declare class ApiResource implements cdk8splus.IApiResource {
 export declare class gameserverlayer extends ApiObject implements gameserverlayerSpec {
     Game: Games;
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-    StorageStrategy: StorageStrategies;
     SourceRef: SourceRef;
     Target: string;
     status?: gameserverlayerStatus;
@@ -68,10 +67,6 @@ export interface gameserverlayerSpec {
      * PersistentVolumeClaim defines the PVC configuration for the module
      */
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-    /**
-     * StorageStrategy selects which storage mechanism will be used for this GSB
-     */
-    StorageStrategy: StorageStrategies;
     /**
      * SourceRef defines the source from which to fetch the overlay files
      */

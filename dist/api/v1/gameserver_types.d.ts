@@ -3,7 +3,7 @@ import KubernetesObject from '@thehonker/k8s-operator';
 import { V1ObjectMeta, V1PersistentVolumeClaimSpec } from '@kubernetes/client-node';
 import { ApiObject, ApiObjectMetadata, GroupVersionKind } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Games, StorageStrategies, StatusReasons } from './enums/index.mjs';
+import { Games, StatusReasons } from './enums/index.mjs';
 export interface gameserverResource extends KubernetesObject {
     spec: gameserverSpec;
     status: gameserverStatus;
@@ -24,7 +24,6 @@ export declare class ApiResource implements cdk8splus.IApiResource {
 export declare class gameserver extends ApiObject implements gameserverSpec {
     Game: Games;
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-    StorageStrategy: StorageStrategies;
     GameserverLayers?: string[];
     status?: gameserverStatus;
     /**
@@ -71,10 +70,6 @@ export interface gameserverSpec {
      * PersistentVolumeClaim defines the PVC configuration for the module
      */
     PersistentVolumeClaim?: V1PersistentVolumeClaimSpec;
-    /**
-     * StorageStrategy selects which storage mechanism will be used for this GS
-     */
-    StorageStrategy: StorageStrategies;
 }
 export interface gameserverStatus {
     /**

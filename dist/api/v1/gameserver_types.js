@@ -1,6 +1,5 @@
 'use strict';
 import { ApiObject } from 'cdk8s';
-import { StorageStrategies } from './enums/index.mjs';
 export class ApiResource {
     apiGroup = 'pm8s.io';
     resourceType = 'gameservers';
@@ -20,7 +19,6 @@ export class ApiResource {
 export class gameserver extends ApiObject {
     Game;
     PersistentVolumeClaim;
-    StorageStrategy;
     GameserverLayers;
     status;
     /**
@@ -56,8 +54,6 @@ export class gameserver extends ApiObject {
         });
         this.Game = props.spec.Game;
         this.PersistentVolumeClaim = props?.spec?.PersistentVolumeClaim;
-        this.StorageStrategy =
-            props?.spec?.StorageStrategy || StorageStrategies.raw;
         this.GameserverLayers = props?.spec?.GameserverLayers;
         this.status = props?.status;
     }
@@ -91,7 +87,6 @@ export function toJson_gameserverSpec(obj) {
         Game: obj.Game,
         GameserverLayers: obj.GameserverLayers,
         PersistentVolumeClaim: obj.PersistentVolumeClaim,
-        StorageStrategy: obj.StorageStrategy,
     };
     // filter undefined values
     return Object.entries(result).reduce((r, i) => (i[1] === undefined ? r : { ...r, [i[0]]: i[1] }), {});

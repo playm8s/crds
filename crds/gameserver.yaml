@@ -183,13 +183,8 @@ spec:
                       description: volumeName is the binding reference to the PersistentVolume backing
                         this claim.
                   description: PersistentVolumeClaim defines the PVC configuration for the module
-                storageStrategy:
-                  type: string
-                  description: StorageStrategy selects which storage mechanism will be used for
-                    this GS
               required:
                 - game
-                - storageStrategy
             status:
               type: object
               description: gameserverStatus defines the observed state of gameserver
